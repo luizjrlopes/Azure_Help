@@ -236,7 +236,7 @@ Para assinalar uma função a um grupo novo, execute o comando a seguir:
    ```
    Após esses comandos o grupo terá as permissões dadas pela atribuição da função.
 
-#### Review
+#### Revisão
 
 Nesse laboratório, você aprendeu:
 
