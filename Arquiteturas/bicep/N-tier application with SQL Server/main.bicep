@@ -47,28 +47,21 @@ module vnet 'vnet.bicep' = {
 
     virtualNetworkName: 'vnet-ntier'
     addressPrefixes: '10.4.0.0/16'
+
     subnetAppGatewayName: 'AppGatewayTierSubnet'
-   // subnetBastion:'BastionTierSubnet'
     subnetWebName: 'webTierSubnet'
     subnetBusinessName: 'businessTierSubnet'
     subnetDataName: 'dataTierSubnet'
-   
+
     addressPrefixsubnetAppGateway: '10.4.0.0/24'
-    //addressPrefixsubnetBastion: '10.4.254.0/27'
     addressPrefixsubnetWeb: '10.4.1.0/24'
     addressPrefixsubnetBusiness: '10.4.2.0/24'
     addressPrefixsubnetData: '10.4.3.0/24'
     
-   
-   // bastionNsgName:'BastionTierSubnet_nsg'
     nsgWebName:'webTierSubnet_nsg'
     nsgBusinessName:'businessTierSubnet_nsg'
     nsgDataName:'dataTierSubnet_nsg'
-    
-   // bastionIpName:'bastionIP-tier'
-    //bastionHostName:'BastionHost_tier'
-   
-
+ 
   }
   
 }
@@ -102,11 +95,6 @@ module appGateway 'apllicationgateway.bicep'={
     vnetId:vnet.outputs.vnetId
     subnetAppGatewayName: 'AppGatewayTierSubnet'
     publicIPRef:pipAppGateway.outputs.pipId
-    //zones:[]
-    //publicIpAddressName:'publicIpGateway'
-    //sku:'Standard'
-  // allocationMethod:'Static'
-    //publicIpZones:[]
     autoScaleMaxCapacity: 10
     apgBackendAddressesIp:apgBackendAddressesIp
   }
@@ -219,21 +207,3 @@ module vmData 'vm.bicep' =[for i in range(0, vmCount):{
 }]
 
 
-
-/*
-module loadBalancer 'loadbalance.bicep' ={
-  
-  name: 'loadBalancerName'
-  scope: rg
-  params:{
-
-  location:location
-  loadBalancerName:'nic-1'
-  publicIPAddressLoadBalanceName:''
-  frontendIPname:''
-  
-  }
- 
-
-}
- */
