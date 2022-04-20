@@ -28,7 +28,7 @@ Execute o comando a seguir:
 
 **Obs:** O valor do Tenant ID é encontrado dentro do seu diretório do Azure AD no portal. Se não colocar o tenant ID pode ocorrer erro de autorização na hora de executar os cmdlets.
 
-![image](../imagens/imagensTenantIDAAD.png)
+![image](../../../imagens/imagensTenantIDAAD.png)
 
 
 ## Gerenciando propriedades de usuários

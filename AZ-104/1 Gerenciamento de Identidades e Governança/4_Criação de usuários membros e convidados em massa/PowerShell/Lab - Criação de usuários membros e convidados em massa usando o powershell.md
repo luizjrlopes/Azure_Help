@@ -28,22 +28,22 @@ Execute o comando a seguir:
 
 **Obs:** O valor do Tenant ID é encontrado dentro do seu diretório do Azure AD no portal. Se não colocar o tenant ID pode ocorrer erro de autorização na hora de executar os cmdlets.
 
-![image](../imagens/imagensTenantIDAAD.png)
+![image](../../../imagens/imagensTenantIDAAD.png)
 
 
 ### Criando usuário membro em massa com o PowerShell
 
 No seu computador local crie uma pasta no diretório C: chamada “work”.
 
-![image](../imagens/Lab1.4_pastaWork.png)
+![image](../../../imagens/Lab1.4_pastaWork.png)
 
 Crie um arquivo na plataforma que quiser em forma de planilha e a configure como a imagem abaixo:
 
-![image](../imagens/Lab1.4_userMembercsv.png)
+![image](../../../imagens/Lab1.4_userMembercsv.png)
 
 Edite os campos com as informações dos usuários que irão ser criados. Edite o nome do arquivo como na figura acima(esse nome pode ser qualquer um de sua escolha). Após os campos preenchidos, baixe o arquivo no formato .csv e insira o arquivo na pasta “work” criada anteriormente.
 
-![image](../imagens/Lab1.4_pastaWork2.png)
+![image](../../../imagens/Lab1.4_pastaWork2.png)
 
 Volte ao powershell.
 
@@ -94,12 +94,12 @@ Execute o comando a seguir:
 
 Crie um arquivo na plataforma que quiser em forma de planilha e a configure como a imagem abaixo:
 
-![image](../imagens/Lab1.4_guestMembercsv.png)
+![image](../../../imagens/Lab1.4_guestMembercsv.png)
 
 
 Edite os campos com as informações dos usuários que irão ser criados. Edite o nome do arquivo como na figura acima(esse nome pode ser qualquer um de sua escolha). Após os campos preenchidos, baixe o arquivo no formato .csv e insira o arquivo na pasta “work” criada anteriormente.
 
-![image](../imagens/Lab1.4_pastaWorkinvite.png)
+![image](../../../imagens/Lab1.4_pastaWorkinvite.png)
 
 Volte ao powershell.
 
