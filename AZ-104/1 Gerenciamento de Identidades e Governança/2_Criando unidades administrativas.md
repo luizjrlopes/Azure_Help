@@ -56,7 +56,7 @@ Para criar estrutura da unidade, execute o comando a seguir:
 
 Nesse laboratório, você aprendeu:
 
-+ Instalando Módulo PowerShell Azure AD no PC Local
++ Instalar Módulo PowerShell Azure AD no PC Local
 + Conectar ao Azure AD pelo powershell
 + Criar unidades administrativas usando o powershell no Azure AD
 

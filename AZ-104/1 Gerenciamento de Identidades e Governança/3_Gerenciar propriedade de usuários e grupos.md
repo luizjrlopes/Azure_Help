@@ -205,10 +205,10 @@ Execute o comando a seguir:
 
 Nesse laboratório, você aprendeu:
 
-+ Instalando Módulo PowerShell Azure AD no PC Local
++ Instalar Módulo PowerShell Azure AD no PC Local
 + Conectar ao Azure AD pelo powershell
-+ Gerenciando propriedades de usuários
-+ Gerenciando propriedade de grupos
++ Gerenciar propriedades de usuários
++ Gerenciar propriedade de grupos
 
 
 

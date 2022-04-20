@@ -115,7 +115,7 @@ Execute o comando a seguir:
   11fa5e1e-737c-40c5-835e-416ae3959606 My new group Novo Grupo criado
    ```
 
-   ### Adicionar a um membro uma função do Active Directory
+   ### Adicionar a um membro uma função do Azure Active Directory
 
 Para adicionar uma função a um usuário no AAD é necessário o ID de uma função habilitada no diretório e o ID do usuário.
 É importante no momento da atribuição da função ao usuário utilizar o id de função já habilitada. Para verificar as funções habilitadas em seu diretório use o comando abaixo.
@@ -198,7 +198,7 @@ Execute o comando a seguir:
    Add-AzureADDirectoryRoleMember -ObjectId $objectId -RefObjectId $refObjectId
    ```
 
-### Adicionar a um grupo uma função do Active Directory
+### Adicionar a um grupo uma função do Azure Active Directory
 
 Para adicionar funções a grupos é necessário pré-requisito.
 
