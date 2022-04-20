@@ -1,4 +1,4 @@
-# Lab 1.1 - Criando usuários e grupos usando o powershell
+# Lab 1.3 - Criando usuários e grupos usando o powershell
 
 ## Instalando PowerShell para Azure AD no PC Local
 

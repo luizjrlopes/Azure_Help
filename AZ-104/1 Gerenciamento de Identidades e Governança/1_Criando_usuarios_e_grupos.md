@@ -240,8 +240,8 @@ Para assinalar uma função a um grupo novo, execute o comando a seguir:
 
 Nesse laboratório, você aprendeu:
 
-+ Instalando Módulo PowerShell Azure AD no PC Local
-+ Conectando ao Azure AD pelo powershell
++ Instalar Módulo PowerShell Azure AD no PC Local
++ Conectar ao Azure AD pelo powershell
 + Criar usuário membro da sua organização com o PowerShell
 + Criar usuário convidado com o PowerShell
 + Criar grupo no Azure AD com o PowerShell

@@ -1,4 +1,4 @@
-# Lab 1.1 - Criando unidades administrativas usando o powershell
+# Lab 1.2 - Criando unidades administrativas usando o powershell
 
 ## Instalando PowerShell para Azure AD no PC Local
 
