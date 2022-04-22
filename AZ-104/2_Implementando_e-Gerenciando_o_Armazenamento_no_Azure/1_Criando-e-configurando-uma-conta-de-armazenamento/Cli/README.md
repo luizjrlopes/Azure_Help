@@ -27,14 +27,22 @@ Você continuará na interface do powershell, entretando usando o módulo do cli
 
 Execute o comando a seguir:
 
-
-
  **cli** 
   ```
-   az login 
+   az login --tenant <digite o ID do tenant>
    ```
- 
+  **Exemplo** 
+  ```
+   az login --tenant 11a11a11-1aa1-a11a-11a1-1111a1111a11
+   ```
+
+
+
 Uma aba de navegador abrirá para que se possa fazer o login em sua conta. faça o login, fecha a tela e volte ao terminal do powershell.
+
+**Obs:** O valor do Tenant ID é encontrado dentro do seu diretório do Azure AD no portal. Se não colocar o tenant ID pode ocorrer erro de autorização na hora de executar os cmdlets.
+
+![image](../../../imagens/imagensTenantIDAAD.png)
 
 **Obs:** Caso apareça uma tela de erro, informando que o comando não existe, basta fechar o powershell, abri-lo novamente e repetir o comando **az login**.
 
