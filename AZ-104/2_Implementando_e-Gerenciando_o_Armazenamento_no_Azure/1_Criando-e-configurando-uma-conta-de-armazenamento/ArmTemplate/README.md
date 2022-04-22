@@ -63,8 +63,9 @@ Execute o comando a seguir:
 
  **powershell** 
    ```powershell
-   New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
-   -TemplateUri "https://github.com/luizjrlopes/Azure_Help/blob/df5ac0e9b849225de2490a935b2b53f8df5b11d7/AZ-104/2_Implementando_e-Gerenciando_o_Armazenamento_no_Azure/1_Criando-e-configurando-uma-conta-de-armazenamento/ArmTemplate/template.json"
+   $resourceGroup = "<resource-group>"
+
+   New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateUri "https://raw.githubusercontent.com/luizjrlopes/Azure_Help/master/AZ-104/2_Implementando_e-Gerenciando_o_Armazenamento_no_Azure/1_Criando-e-configurando-uma-conta-de-armazenamento/ArmTemplate/template.json"
 
    ```
 
@@ -86,7 +87,7 @@ Para excluir a conta de armazenamento, execute o comando a seguir:
   ```powershell
    $name = "storage-account-name"
    $resourceGroup = "resource-group"
-
+  
    Remove-AzStorageAccount -Name $name -ResourceGroupName $resourceGroup
    ```
 
@@ -119,3 +120,6 @@ Nesse laboratório, você aprendeu:
 
 + https://docs.microsoft.com/pt-br/azure/storage/common/storage-account-create?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=template
 
+ $resourceGroup = "testeFinal"
+ $location = "westus"
+ New-AzResourceGroup -Name $resourceGroup -Location $location
