@@ -36,8 +36,6 @@ Execute o comando a seguir:
    az login --tenant 11a11a11-1aa1-a11a-11a1-1111a1111a11
    ```
 
-
-
 Uma aba de navegador abrirá para que se possa fazer o login em sua conta. faça o login, fecha a tela e volte ao terminal do powershell.
 
 **Obs:** O valor do Tenant ID é encontrado dentro do seu diretório do Azure AD no portal. Se não colocar o tenant ID pode ocorrer erro de autorização na hora de executar os cmdlets.

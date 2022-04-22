@@ -67,7 +67,6 @@ Em seguida, crie uma conta de armazenamento. No exemplo abaixo iremos utilizar u
 
 Execute o comando a seguir:
 
-
  **powershell** 
    ```powershell
    $resourceGroup = "<nome do grupo de recurso>"

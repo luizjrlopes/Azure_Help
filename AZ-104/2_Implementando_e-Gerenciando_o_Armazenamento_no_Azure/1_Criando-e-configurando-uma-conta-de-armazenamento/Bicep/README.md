@@ -93,7 +93,6 @@ Agora vamos criar o arquivo **template.bicep**.
    New-Item -Path 'C:\LabsBicep\template.bicep' -ItemType File
    ```
 
-
 Abra a pasta criada no Vscode e selecione o arquivo vazio.
 
 ![image](../../../imagens/pasta_bicep.png)

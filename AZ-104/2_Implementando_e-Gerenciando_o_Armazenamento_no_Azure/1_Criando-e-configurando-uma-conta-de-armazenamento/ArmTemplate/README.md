@@ -1,11 +1,10 @@
-# Lab 2.1 - Criando e configurando uma conta de armazenamento com Arm Template do Azure
+# Lab 2.1.3 - Criando e configurando uma conta de armazenamento com Arm Template do Azure
 
 ## Preparando o ambiente para o Arm no PC local
 
 Você pode usar o Azure PowerShell ou a CLI do Azure para implantar um modelo do Resource Manager. Nesse Lab iremos utilizar o PowerShell.
 
 Caso não tenha o Azure PowerShell no PC Local siga os passos abaixo:
-
 
 ### Abra o powershell como administrador
 
