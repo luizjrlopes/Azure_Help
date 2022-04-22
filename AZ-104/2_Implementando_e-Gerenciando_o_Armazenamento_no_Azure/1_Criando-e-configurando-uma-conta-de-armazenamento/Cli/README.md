@@ -18,6 +18,8 @@ Isso baixará e instalará a versão mais recente da CLI do Azure para Windows. 
 
 Para instalar uma versão específica, substitua o argumento ```-Uri```  pelo ```https://azcliprod.blob.core.windows.net/msi/azure-cli-<version>.msi```, colocando a versão desejada no campo **\<version>**. As versões disponíveis podem ser encontradas nas [notas de versão da CLI do Azure](https://docs.microsoft.com/en-us/cli/azure/release-notes-azure-cli) .
 
+**Obs:** Para utilizar o módulo do CLI após a instalação, feche e abra novamente o powershell como administrador.
+
 ## Conectando ao Storage Accounts pelo Cli
 
 ## Faça login pelo CLI
