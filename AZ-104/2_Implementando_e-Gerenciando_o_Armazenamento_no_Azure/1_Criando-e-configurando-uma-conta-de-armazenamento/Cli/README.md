@@ -1,4 +1,4 @@
-# Lab 2.1 - Criando e configurando uma conta de armazenamento com Cli do Azure
+# Lab 2.1.2 - Criando e configurando uma conta de armazenamento com Cli do Azure
 
 ## Instalando Cli do Azure no PC Local a partir do powershell
 

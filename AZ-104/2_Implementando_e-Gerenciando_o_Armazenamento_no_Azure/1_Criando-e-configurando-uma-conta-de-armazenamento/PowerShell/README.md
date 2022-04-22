@@ -1,4 +1,4 @@
-# Lab 2.1 - Criando e configurando uma conta de armazenamento com PowerShell
+# Lab 2.1.1 - Criando e configurando uma conta de armazenamento com PowerShell
 
 ## Instalando Azure PowerShell no PC Local
 

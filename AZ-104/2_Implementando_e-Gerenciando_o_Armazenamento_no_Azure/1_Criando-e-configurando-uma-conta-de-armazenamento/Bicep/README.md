@@ -1,11 +1,15 @@
-# Lab 2.1 - Criando e configurando uma conta de armazenamento com Bicep do Azure
+# Lab 2.1.4 - Criando e configurando uma conta de armazenamento com Bicep do Azure
 
 ## Preparando o ambiente para o Bicep no PC local
 
-Você pode usar o Azure PowerShell ou a CLI do Azure para implantar um recurso com Bicep. Nesse Lab iremos utilizar o PowerShell.
+Você pode usar o Azure PowerShell ou o CLI do Azure para implantar um recurso com Bicep. Nesse Lab iremos utilizar o CLI.
 
-Caso não tenha o Azure PowerShell no PC Local siga os passos abaixo:
+Caso não tenha o CLI do Azure no PC Local siga os passos abaixo:
 
+
+### Instalando Cli do Azure no PC Local a partir do powershell
+
+Você também pode instalar a CLI do Azure usando o PowerShell.
 
 ### Abra o powershell como administrador
 
@@ -14,22 +18,109 @@ Execute o comando a seguir:
 
  **powershell** 
   ```powershell
-   Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+   $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
    ```
-**Obs:** Aguarde o fim das instalações. Pode demorar até 30 minutos dependendo da configuração do pc local.
 
-## Conectando ao Storage Accounts pelo powershell
+Isso baixará e instalará a versão mais recente da CLI do Azure para Windows. Se você já tiver uma versão instalada, o instalador atualizará a versão existente.
+
+Para instalar uma versão específica, substitua o argumento ```-Uri```  pelo ```https://azcliprod.blob.core.windows.net/msi/azure-cli-<version>.msi```, colocando a versão desejada no campo **\<version>**. As versões disponíveis podem ser encontradas nas [notas de versão da CLI do Azure](https://docs.microsoft.com/en-us/cli/azure/release-notes-azure-cli) 
+
+## Instalar ferramentas do Bicep
+
+O Azure PowerShell não dá suporte à implantação de arquivos Bicep remotos. Então será necessário que tenha o aquivo em seu pc local.
+
+Para criar arquivos Bicep, você precisará de um bom editor de Bicep. Recomendações:
+
++ **Visual Studio Code** - Se você ainda não tiver o Visual Studio Code, [instale-o](https://code.visualstudio.com/).
+
++ **Extensão do Bicep para o Visual Studio Code** - O Visual Studio Code com a extensão do Bicep fornece suporte a idiomas e preenchimento automático de recursos. A extensão ajuda a criar e validar arquivos Bicep.
+
+Para instalar a extensão, pesquise bicep na guia Extensões. Selecione **Instalar.**
+
+![image](../../../imagens/imagemExtensaoBicep.png)
+
+
+## Ambiente de implantação
+
+Depois de configurar seu ambiente de desenvolvimento, você precisa instalar a CLI do Bicep para seu ambiente de implantação. Dependendo se você deseja usar a CLI do Azure ou Azure PowerShell, as etapas para configurar um ambiente de implantação local são diferentes. Nesse laboratório iremos configurar com o CLI. Caso queira utilizar o powershell, acesse [Instalar ferramentas do Bicep](https://docs.microsoft.com/pt-br/azure/azure-resource-manager/bicep/install#windows)
+
+Você deve ter a CLI do Azure versão 2.20.0 ou mais recente instalada.
+
+Para verificar sua versão atual, execute:
+
+ **powershell** 
+  ```
+   az --version
+   ```
+
+Instale o CLI do Bicep:
+
+**powershell** 
+  ```
+   az bicep install
+   ```
+
+Para atualizar para a versão mais recente, use:
+
+**powershell** 
+  ```
+   az bicep upgrade
+   ```
+
+Para validar a instalação, use:
+
+**powershell** 
+  ```
+   az bicep version
+   ```
+
+## Estruturando arquivo para implantação
+
+Agora vamos criar a estrutura que será utilizada no Vscode para a implatação.
+
+Vamos criar a pasta que ficará o **template.bicep**.
+
+**powershell** 
+  ```powershell
+   # cria uma pasta no diretório C:\
+   New-Item -Path 'C:\LabsBicep' -ItemType Directory
+   ```
+
+Agora vamos criar o arquivo **template.bicep**.
+
+**powershell** 
+  ```powershell
+   # cria uma pasta no diretório C:\
+   New-Item -Path 'C:\LabsBicep\template.bicep' -ItemType File
+   ```
+
+
+Abra a pasta criada no Vscode e selecione o arquivo vazio.
+
+![image](../../../imagens/pasta_bicep.png)
+
+Copie o código desse laboratório para esse arquivo.
+
+![image](../../../imagens/pasta_bicep2.png)
+
+
+## Conectando ao Storage Accounts do Azure
+
+**Obs:** Todos comandos a seguir podem ser executados diretamente pelo terminal do Vscode.
+
+## Faça login pelo CLI
+
+Primeiramente faça login em sua conta usando o módulo do CLI.
 
 Execute o comando a seguir:
 
-
- **powershell** 
-  ```powershell
-   Connect-AzAccount -TenantID <digite o ID do tenant>
+ **cli** 
+  ```
+   az login --tenant <digite o ID do tenant>
    ```
- **Exemplo** 
-  ```powershell
-   Connect-AzAccount -TenantID 11a11a11-1aa1-a11a-11a1-1111a1111a11
+  **Exemplo** 
+  ```
+   az login --tenant 11a11a11-1aa1-a11a-11a1-1111a1111a11
    ```
 
 Uma aba de navegador abrirá para que se possa fazer o login em sua conta. faça o login, fecha a tela e volte ao terminal do powershell.
@@ -38,6 +129,7 @@ Uma aba de navegador abrirá para que se possa fazer o login em sua conta. faça
 
 ![image](../../../imagens/imagensTenantIDAAD.png)
 
+Após a instalação e conexão concluídas, feche o terminal.
 
 ## Criar uma conta de armazenamento
 
@@ -49,23 +141,30 @@ Cada recurso do Resource Manager, incluindo uma conta de armazenamento do Azure,
 Execute o comando a seguir:
 
 
- **powershell** 
-  ```powershell
-   $resourceGroup = "<resource-group>"
-   $location = "<location>"
-   New-AzResourceGroup -Name $resourceGroup -Location $location
+ **CLI** 
+  ```
+   $name = "storage-account-name"
+   $location = "westus"
+
+   az group create --name $name --location $location
+
    ```
+
  
 Em seguida, crie uma conta de armazenamento. 
+Atualmente, o Azure PowerShell não dá suporte à implantação de arquivos Bicep remotos. Então será necessário que copie os conteudo do arquivo "template.bicep" para seu computador local. Abra um bloco de notas, copie o conteúdo e salve-o com o mesmo nome do arquivo desse laboratório. Preencha a variável **$templateFile** com o caminho do arquivo.
 
 Execute o comando a seguir:
 
 
  **powershell** 
    ```powershell
-   $resourceGroup = "<resource-group>"
+   #escolha um nome para seu resource-group
+   $resourceGroup = "resource-group"
+   #Verique o caminho do seu arquivo e coloque aqui.
+   $templateFile = "C:\LabsBicep\template.bicep"
 
-   New-AzResourceGroupDeployment -ResourceGroupName $resourceGroup -TemplateUri "https://raw.githubusercontent.com/luizjrlopes/Azure_Help/master/AZ-104/2_Implementando_e-Gerenciando_o_Armazenamento_no_Azure/1_Criando-e-configurando-uma-conta-de-armazenamento/ArmTemplate/template.json"
+   az deployment group create --resource-group $resourceGroup --template-file $templateFile
 
    ```
 
@@ -82,23 +181,23 @@ Para excluir a conta de armazenamento, execute o comando a seguir:
 
 
  **powershell** 
-  ```powershell
+  ```
    $name = "storage-account-name"
    $resourceGroup = "resource-group"
-  
-   Remove-AzStorageAccount -Name $name -ResourceGroupName $resourceGroup
+
+   az storage account delete --name $name --resource-group $resourceGroup
    ```
 
 Caso deseje deletar o grupo de recurso, execute o comando abaixo.
 
   **powershell** 
-  ```powershell
-   $resourceGroup = "<resource-group>"
+  ```
+   $name = "resource-group-name"
+  
+   az group delete --name $name
+   ``` 
 
-   Remove-AzResourceGroup -Name $resourceGroup 
-   ```
-
-Quando se deleta o grupo de recursos, todos os recursos contidos nele são deletados. Ao fazer esse processo se certifique que todos o s recursos podem ser excluídos. Caso contrário, exclua-os individualmente.  
+Quando se deleta o grupo de recursos, todos os recursos contidos nele são deletados. Ao fazer esse processo se certifique que todos o s recursos podem ser excluídos. Caso contrário, exclua-os individualmente. 
 
    
 
@@ -106,9 +205,12 @@ Quando se deleta o grupo de recursos, todos os recursos contidos nele são delet
 
 Nesse laboratório, você aprendeu:
 
-+ Instalar Módulo Azure PowerShell no PC Local
-+ Conectar ao Storage Accounts pelo powershell
-+ Criar uma conta de armazenamento usando Bicep do Azure
++ Preparando o ambiente para o Bicep no PC local
++ Instalar ferramentas do Bicep
++ Criar um ambiente de implantação para  o Bicep do Azure
++ Estruturar um arquivo Bicep para implantação
++ Conectar ao Azure Storage Accounts
++ Criar uma conta de armazenamento
 + Deletar uma conta de armazenamento
 
 
@@ -116,8 +218,5 @@ Nesse laboratório, você aprendeu:
 
 #### Referências
 
-+ https://docs.microsoft.com/pt-br/azure/storage/common/storage-account-create?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=template
++ https://docs.microsoft.com/pt-br/azure/azure-resource-manager/bicep/install#windows
 
- $resourceGroup = "testeFinal"
- $location = "westus"
- New-AzResourceGroup -Name $resourceGroup -Location $location
