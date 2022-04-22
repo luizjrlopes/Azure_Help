@@ -55,7 +55,6 @@ Execute o comando a seguir:
    $location = "<location>"
    New-AzResourceGroup -Name $resourceGroup -Location $location
    ```
-
  
 Em seguida, crie uma conta de armazenamento. 
 
@@ -118,5 +117,5 @@ Nesse laboratório, você aprendeu:
 
 #### Referências
 
-+ https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-powershell#code-try-4
++ https://docs.microsoft.com/pt-br/azure/storage/common/storage-account-create?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=template
 
