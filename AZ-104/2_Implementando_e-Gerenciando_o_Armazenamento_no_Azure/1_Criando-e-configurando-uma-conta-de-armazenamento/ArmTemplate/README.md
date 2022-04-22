@@ -65,7 +65,7 @@ Execute o comando a seguir:
  **powershell** 
    ```powershell
    New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName `
-   -TemplateUri ""
+   -TemplateUri "https://github.com/luizjrlopes/Azure_Help/blob/df5ac0e9b849225de2490a935b2b53f8df5b11d7/AZ-104/2_Implementando_e-Gerenciando_o_Armazenamento_no_Azure/1_Criando-e-configurando-uma-conta-de-armazenamento/ArmTemplate/template.json"
 
    ```
 
