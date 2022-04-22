@@ -65,6 +65,7 @@ Em seguida, crie uma conta de armazenamento. No exemplo abaixo iremos utilizar u
 
 **Obs:** O nome da conta de armazenamento deve ter entre 3 e 24 caracteres e usar apenas números e letras minúsculas.
 
+
 Execute o comando a seguir:
 
  **powershell** 

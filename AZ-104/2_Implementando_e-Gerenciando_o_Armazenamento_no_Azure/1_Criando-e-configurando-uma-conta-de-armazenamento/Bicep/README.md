@@ -85,6 +85,7 @@ Vamos criar a pasta que ficará o **template.bicep**.
    New-Item -Path 'C:\LabsBicep' -ItemType Directory
    ```
 
+
 Agora vamos criar o arquivo **template.bicep**.
 
 **powershell** 

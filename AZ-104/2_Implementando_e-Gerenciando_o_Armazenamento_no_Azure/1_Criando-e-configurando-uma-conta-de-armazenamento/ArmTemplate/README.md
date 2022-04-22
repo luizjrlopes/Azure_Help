@@ -10,7 +10,6 @@ Caso não tenha o Azure PowerShell no PC Local siga os passos abaixo:
 
 Execute o comando a seguir:
 
-
  **powershell** 
   ```powershell
    Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
