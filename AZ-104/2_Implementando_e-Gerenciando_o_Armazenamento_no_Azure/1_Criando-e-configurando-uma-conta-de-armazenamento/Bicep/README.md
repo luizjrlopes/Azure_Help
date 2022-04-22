@@ -1,8 +1,8 @@
-# Lab 2.1 - Criando e configurando uma conta de armazenamento com Arm Template do Azure
+# Lab 2.1 - Criando e configurando uma conta de armazenamento com Bicep do Azure
 
-## Preparando o ambiente para o Arm no PC local
+## Preparando o ambiente para o Bicep no PC local
 
-Você pode usar o Azure PowerShell ou a CLI do Azure para implantar um modelo do Resource Manager. Nesse Lab iremos utilizar o PowerShell.
+Você pode usar o Azure PowerShell ou a CLI do Azure para implantar um recurso com Bicep. Nesse Lab iremos utilizar o PowerShell.
 
 Caso não tenha o Azure PowerShell no PC Local siga os passos abaixo:
 
@@ -108,7 +108,7 @@ Nesse laboratório, você aprendeu:
 
 + Instalar Módulo Azure PowerShell no PC Local
 + Conectar ao Storage Accounts pelo powershell
-+ Criar uma conta de armazenamento utilizando ARM Template
++ Criar uma conta de armazenamento usando Bicep do Azure
 + Deletar uma conta de armazenamento
 
 
