@@ -69,8 +69,6 @@ Execute o comando a seguir:
 
    ```
 
-**Obs:** Note que, caso haja segmentação do comando em múltiplas linhas deve-se colocar no final das linhas um acento craseado.
-
 ## Deletar uma conta de armazenamento
 
 A exclusão de uma conta de armazenamento exclui a conta inteira, incluindo todos os dados da conta. Certifique-se de fazer backup de todos os dados que deseja salvar antes de excluir a conta.
