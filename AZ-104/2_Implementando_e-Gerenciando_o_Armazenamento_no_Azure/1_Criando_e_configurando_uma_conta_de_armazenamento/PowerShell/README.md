@@ -8,7 +8,6 @@ Usar o cmdlet **Install-Module** é o método de instalação preferencial para 
 
 Execute o comando a seguir:
 
-
  **powershell** 
   ```powershell
    Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
