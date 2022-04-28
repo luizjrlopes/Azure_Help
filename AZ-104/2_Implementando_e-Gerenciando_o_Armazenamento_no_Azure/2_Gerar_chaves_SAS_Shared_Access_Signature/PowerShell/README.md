@@ -245,5 +245,7 @@ Nesse laboratório, você aprendeu:
 #### Referências
 
 + https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-powershell#code-try-4
-+ https://docs.microsoft.com/pt-br/azure/storage/common/storage-account-get-info?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=powershell
++ https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azroleassignment?view=azps-7.5.0
++ https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstorageblobsastoken?view=azps-7.5.0
+
 
