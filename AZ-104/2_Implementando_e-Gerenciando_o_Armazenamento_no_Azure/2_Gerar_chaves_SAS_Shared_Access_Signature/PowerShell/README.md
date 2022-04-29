@@ -70,9 +70,9 @@ Execute o comando a seguir:
 
  **powershell** 
    ```powershell
-   $resourceGroup = "nome do grupo de recurso"
-   $name = "nomeunico"
-   $location = "região"
+   $resourceGroup = "<nome do grupo de recurso>"
+   $name = "<nomeunico>"
+   $location = "<região>"
    $skuName = "Standard_RAGRS"
    $kind = "StorageV2"
 
@@ -93,8 +93,8 @@ Execute o comando a seguir:
 
  **powershell** 
    ```powershell
-   $resourceGroup = "nome do grupo de recurso"
-   $storageAccountName = "nome da conta de armazenamento criada"
+   $resourceGroup = "<nome do grupo de recurso>"
+   $storageAccountName = "<nome da conta de armazenamento criada>"
 
    $storageAcc=Get-AzStorageAccount -ResourceGroupName  $resourceGroup -Name  $storageAccountName
    $ctx=$storageAcc.Context
@@ -176,7 +176,7 @@ Execute o comando a seguir:
  **powershell** 
    ```powershell
   
-   $resourceGroup = "<resource-group>"
+   $resourceGroup = "<nome do grupo de recurso>"
    $objectIdUser = "<valor do seu ObjetctID>"
 
    New-AzRoleAssignment -ResourceGroupName $resourceGroup -ObjectId $objectIdUser `
@@ -210,7 +210,7 @@ Após esse comando um chave será gerada.
    ```
 
 Copie a chave e cole no navegador.
-**Obs:** Note que ao colar a chave o arquivo não será visualizado no navegador e sim séra baixado para seu computador. Isso ocorre devido as propriedades default na criação da conta de armazenamento pelo Powershell. 
+**Obs:** Note que ao colar a chave o arquivo não será visualizado no navegador e sim séra baixado para seu computador. Isso ocorre devido as propriedades da variável contexto na criação do container. 
 
 ## Deletar recursos do Laboratório.
 
@@ -218,7 +218,7 @@ Caso deseje deletar o grupo de recurso, execute o comando abaixo.
 
   **powershell** 
   ```powershell
-   $resourceGroup = "<resource-group>"
+    $resourceGroup = "<nome do grupo de recurso>"
 
    Remove-AzResourceGroup -Name $resourceGroup 
    ```
