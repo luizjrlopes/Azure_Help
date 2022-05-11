@@ -249,19 +249,19 @@ Execute o comando a seguir:
    $nsgAd = "nsgAD"
    
    echo "Associando nsgApg ao subnetNameApg"
-   az network vnet subnet update --vnet-name $vNet --name $subnetNameApg --resource-group $resourceGroup --network-security-group $nsgApg
+   az network vnet subnet update --vnet-name $vNetName --name $subnetNameApg --resource-group $resourceGroup --network-security-group $nsgApg
   
    echo "Associando nsgWeb ao subnetWebName"
-   az network vnet subnet update --vnet-name $vNet --name $subnetWebName --resource-group $resourceGroup --network-security-group $nsgWeb
+   az network vnet subnet update --vnet-name $vNetName --name $subnetWebName --resource-group $resourceGroup --network-security-group $nsgWeb
   
    echo "Associando nsgBusiness ao subnetBusinessName"
-   az network vnet subnet update --vnet-name $vNet --name $subnetBusinessName --resource-group $resourceGroup --network-security-group $nsgBusiness
+   az network vnet subnet update --vnet-name $vNetName --name $subnetBusinessName --resource-group $resourceGroup --network-security-group $nsgBusiness
 
    echo "Associando nsgData ao subnetDataName"
-   az network vnet subnet update --vnet-name $vNet --name $subnetDataName --resource-group $resourceGroup --network-security-group $nsgData
+   az network vnet subnet update --vnet-name $vNetName --name $subnetDataName --resource-group $resourceGroup --network-security-group $nsgData
 
    echo "Associate nsgAd ao subnetAdName"
-   az network vnet subnet update --vnet-name $vNet --name $subnetAdName --resource-group $resourceGroup --network-security-group $nsgAd
+   az network vnet subnet update --vnet-name $vNetName --name $subnetAdName --resource-group $resourceGroup --network-security-group $nsgAd
 
 
    ```
