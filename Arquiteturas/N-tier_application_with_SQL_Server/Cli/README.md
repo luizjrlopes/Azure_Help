@@ -109,7 +109,7 @@ Execute o comando a seguir:
   ```
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
-   $subnetBastionName = "subnet-bastion"
+   $subnetBastionName = "AzureBastionSubnet"
    $subnetPrefixBastion = "10.5.254.0/27"
 
    echo "Creating subnet BastionHost"
@@ -212,10 +212,13 @@ Execute o comando a seguir:
    $location = "westus"
    
    echo "Criando regras para nsgApg"
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Allow-HTTPS-All --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix Internet --source-port-range "*" --destination-address-prefix "*" --destination-port-range 443
+   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Allow-HTTPS-All --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix Internet --source-port-range "443" --destination-address-prefix "*" --destination-port-range 80
 
     echo "Criando regras para nsgWeb"
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name AllowWeb --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix "10.5.0.0/24" --source-port-range "*" --destination-address-prefix "10.5.1.0/24" --destination-port-range 3000
+
+   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name AllowWeb --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix "10.5.0.0/24" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 80
+
+   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
 
 
    echo "Criando regras para nsgBusiness"
@@ -267,48 +270,88 @@ Execute o comando a seguir:
    ```
 
 
-
-
-
-
-
-
-
-
-
-
-Execute o comando a seguir:
-
+## Criar bastion host
 
  **CLI** 
   ```
-   $name = "storage-account-name"
+   $resourceGroup = "rg-ntier"
    $location = "westus"
+   $vNetName = "vnet-ntier"
+   $publicIpBastionName = "publicIpBastion"
+   $bastionName = "bastionNTier"
 
-   az network vnet create --name
-                       --resource-group
-                       [--address-prefixes]
-                       [--bgp-community]
-                       [--ddos-protection {false, true}]
-                       [--ddos-protection-plan]
-                       [--defer]
-                       [--dns-servers]
-                       [--edge-zone]
-                       [--enable-encryption {false, true}]
-                       [--encryption-enforcement-policy {allowUnencrypted, dropUnencrypted}]
-                       [--flowtimeout]
-                       [--location]
-                       [--network-security-group]
-                       [--subnet-name]
-                       [--subnet-prefixes]
-                       [--tags]
-                       [--vm-protection {false, true}]
+   az network public-ip create --resource-group $resourceGroup --name $publicIpBastionName  --sku Standard --location $location
 
+   az network bastion create --name $bastionName --public-ip-address $publicIpBastionName --resource-group $resourceGroup --vnet-name $vNetName --location $location
    ```
 
 
+## Criar máquinas virtuais da camada web
+
+   **CLI** 
+   ```
+      $resourceGroup = "rg-ntier"
+      $vNetName = "vnet-ntier"
+      $subnetWebName = "subnet-web"
+      $nsg = "nsgWeb"
+      $vm1WebName = "vmWebNTier1"
+      $vm2WebName = "vmWebNTier2"
+      $vm3WebName = "vmWebNTier3"
+      $image = "Win2019Datacenter"
+      $login = "adminNome"
+      
 
 
+      az vm create --resource-group $resourceGroup --name $vm1WebName  --image $image --admin-username $login  --vnet-name $vNetName --subnet $subnetWebName --nsg $nsg --public-ip-address """" 
+         
+      az vm create --resource-group $resourceGroup --name $vm2WebName  --image $image --admin-username $login  --vnet-name $vNetName --subnet $subnetWebName --nsg $nsg --public-ip-address """" 
+
+      az vm create --resource-group $resourceGroup --name $vm3WebName  --image $image --admin-username $login  --vnet-name $vNetName --subnet $subnetWebName --nsg $nsg --public-ip-address """"
+
+   ```
+
+## Criar Application Gateway
+
+   Primeiramente vamos obter o ip's das máquinas da camada web para associa-lo ao application gateway
+
+   **CLI** 
+   ``` 
+      $resourceGroup = "rg-ntier"
+      $vm1WebName = "vmWebNTier1"
+      $vm2WebName = "vmWebNTier2"
+      $vm3WebName = "vmWebNTier3"
+
+      az vm list-ip-addresses -g $resourceGroup -n $vm1WebName
+      az vm list-ip-addresses -g $resourceGroup -n $vm2WebName
+      az vm list-ip-addresses -g $resourceGroup -n $vm3WebName
+
+
+      
+   ```
+
+   Agora vamos implatar o Application Gateway
+
+   **CLI** 
+   ```
+      $resourceGroup = "rg-ntier"
+      $location = "westus"
+      $vNetName = "vnet-ntier"
+      $subnetNameApg = "subnet-apg"
+      $publicIpApgName = "publicIpApg"
+      $apgName = "apgNTier"
+      # "Coloque os valores do ip's privados das VM's web"
+      $ipVMWeb1 = "10.5.1.4"
+      $ipVMWeb2 = "10.5.1.5"
+      $ipVMWeb3 = "10.5.1.6"
+
+      az network public-ip create --resource-group $resourceGroup --name $publicIpApgName --sku Basic --location $location
+
+      az network application-gateway create -g $resourceGroup -n $apgName --capacity 3 `
+      --sku Standard_Medium --vnet-name $vNetName --subnet $subnetNameApg `
+      --http-settings-cookie-based-affinity Disabled `
+      --public-ip-address $publicIpApgName --servers $ipVMWeb1 $ipVMWeb2 $ipVMWeb3 
+
+   ```
 
 
 
