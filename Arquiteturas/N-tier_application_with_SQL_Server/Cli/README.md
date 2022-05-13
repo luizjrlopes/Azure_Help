@@ -212,15 +212,13 @@ Execute o comando a seguir:
    $location = "westus"
    
    echo "Criando regras para nsgApg"
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Allow-HTTPS-All --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix Internet --source-port-range "443" --destination-address-prefix "*" --destination-port-range 80
+   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Allow-HTTP --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix Internet --source-port-range "*" --destination-address-prefix "*" --destination-port-range 80
 
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Gateway --access Allow --protocol Tcp --direction Inbound --priority 101 --source-address-prefix GatewayManager --source-port-range "443" --destination-address-prefix "*" --destination-port-range 65200-65535
+   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Gateway --access Allow --protocol Tcp --direction Inbound --priority 101 --source-address-prefix GatewayManager --source-port-range "*" --destination-address-prefix "*" --destination-port-range 65200-65535
 
     echo "Criando regras para nsgWeb"
 
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name AllowWeb --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix "10.5.0.0/24" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 80
-
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
+      az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
 
 
    echo "Criando regras para nsgBusiness"
@@ -301,15 +299,21 @@ Execute o comando a seguir:
       $vm3WebName = "vmWebNTier3"
       $image = "Win2019Datacenter"
       $login = "adminNome"
-      
-
+       
 
       az vm create --resource-group $resourceGroup --name $vm1WebName  --image $image --admin-username $login  --vnet-name $vNetName --subnet $subnetWebName --nsg $nsg --public-ip-address """" 
          
       az vm create --resource-group $resourceGroup --name $vm2WebName  --image $image --admin-username $login  --vnet-name $vNetName --subnet $subnetWebName --nsg $nsg --public-ip-address """" 
 
       az vm create --resource-group $resourceGroup --name $vm3WebName  --image $image --admin-username $login  --vnet-name $vNetName --subnet $subnetWebName --nsg $nsg --public-ip-address """"
+      
+      Após a criação das vms, inserir comando abaixo em cada vm pelo Run comand no portal e desligar e ligar vm's novamente.
 
+      powershell.exe Install-WindowsFeature -name Web-Server -IncludeManagementTools
+      powershell.exe Remove-Item -Path 'C:\inetpub\wwwroot\iisstart.htm'
+      powershell.exe Add-Content -Path 'C:\inetpub\wwwroot\iisstart.htm' -Value $($env:computername)
+
+      
    ```
 
 ## Criar Application Gateway
