@@ -293,35 +293,34 @@ Execute o comando a seguir:
 
    **CLI** 
    ```
-      for ($i = 1; $i -lt 4 ; $i++)
-      {
-         $resourceGroup = "rg-ntier"
-         $vNetName = "vnet-ntier"
-         $subnetWebName = "subnet-web"
-         $nsg = "nsgWeb"
-         $vmWebName = "vmWebNTier$i"
-         $image = "Win2019datacenter"
-         $login = "azureUser"
-         $senha = "P4ss0w0rd555*"
-        
-     
-         az vm create `
-         --name $vmWebName `
-         --resource-group $resourceGroup `
-         --admin-password $senha `
-         --admin-username $login `
-         --image $image `
-         --no-wait `
-         --vnet-name $vNetName `
-         --subnet $subnetWebName `
-         --nsg $nsg `
-         --public-ip-address """"
-      }
-
+   for ($i = 1; $i -lt 4 ; $i++)
+   {
+      $resourceGroup = "rg-ntier"
+      $vNetName = "vnet-ntier"
+      $subnetWebName = "subnet-web"
+      $nsg = "nsgWeb"
+      $vmWebName = "vmWebNTier$i"
+      $image = "Win2019datacenter"
+      $login = "azureUser"
+      $senha = "P4ss0w0rd555*"
       
+   
+      az vm create `
+      --name $vmWebName `
+      --resource-group $resourceGroup `
+      --admin-password $senha `
+      --admin-username $login `
+      --image $image `
+      --no-wait `
+      --vnet-name $vNetName `
+      --subnet $subnetWebName `
+      --nsg $nsg `
+      --public-ip-address """"
+   }  
    ```
 
-    Após a criação das vms, inserir comando abaixo em cada vm pelo Run comand no portal e desligar e ligar vm's novamente.
+   Após a criação das vms, inserir comando abaixo em cada vm pelo Run comand no portal e desligar e ligar vm's novamente.
+
 
       powershell.exe Install-WindowsFeature -name Web-Server -IncludeManagementTools
       powershell.exe Remove-Item -Path 'C:\inetpub\wwwroot\iisstart.htm'
@@ -341,32 +340,29 @@ Execute o comando a seguir:
       az vm list-ip-addresses -g $resourceGroup -n $vm1WebName
       az vm list-ip-addresses -g $resourceGroup -n $vm2WebName
       az vm list-ip-addresses -g $resourceGroup -n $vm3WebName
-
-
-      
    ```
 
    Agora vamos implatar o Application Gateway
 
    **CLI** 
    ```
-      $resourceGroup = "rg-ntier"
-      $location = "westus"
-      $vNetName = "vnet-ntier"
-      $subnetNameApg = "subnet-apg"
-      $publicIpApgName = "publicIpApg"
-      $apgName = "apgNTier"
-      # "Coloque os valores do ip's privados das VM's web"
-      $ipVMWeb1 = "10.5.1.4"
-      $ipVMWeb2 = "10.5.1.5"
-      $ipVMWeb3 = "10.5.1.6"
+   $resourceGroup = "rg-ntier"
+   $location = "westus"
+   $vNetName = "vnet-ntier"
+   $subnetNameApg = "subnet-apg"
+   $publicIpApgName = "publicIpApg"
+   $apgName = "apgNTier"
+   # "Coloque os valores do ip's privados das VM's web"
+   $ipVMWeb1 = "10.5.1.4"
+   $ipVMWeb2 = "10.5.1.5"
+   $ipVMWeb3 = "10.5.1.6"
 
-      az network public-ip create --resource-group $resourceGroup --name $publicIpApgName --sku Basic --location $location
+   az network public-ip create --resource-group $resourceGroup --name $publicIpApgName --sku Basic --location $location
 
-      az network application-gateway create -g $resourceGroup -n $apgName --capacity 3 `
-      --sku Standard_Medium --vnet-name $vNetName --subnet $subnetNameApg `
-      --http-settings-cookie-based-affinity Disabled `
-      --public-ip-address $publicIpApgName --servers $ipVMWeb1 $ipVMWeb2 $ipVMWeb3 
+   az network application-gateway create -g $resourceGroup -n $apgName --capacity 3 `
+   --sku Standard_Medium --vnet-name $vNetName --subnet $subnetNameApg `
+   --http-settings-cookie-based-affinity Disabled `
+   --public-ip-address $publicIpApgName --servers $ipVMWeb1 $ipVMWeb2 $ipVMWeb3 
 
    ```
 
@@ -376,30 +372,30 @@ Execute o comando a seguir:
    **CLI** 
    ```
 
-      for ($i = 1; $i -lt 4 ; $i++)
-      {
-         $resourceGroup = "rg-ntier"
-         $vNetName = "vnet-ntier"
-         $subnetBusinessName = "subnet-business"
-         $nsg = "nsgBusiness"
-         $vmBusinessName = "vmBusinessNTier$i"
-         $image = "Win2019datacenter"
-         $login = "azureUser"
-         $senha = "P4ss0w0rd555*"
-        
-     
-         az vm create `
-         --name $vmBusinessName `
-         --resource-group $resourceGroup `
-         --admin-password $senha `
-         --admin-username $login `
-         --image $image `
-         --no-wait `
-         --vnet-name $vNetName `
-         --subnet $subnetBusinessName `
-         --nsg $nsg `
-         --public-ip-address """"
-      }
+   for ($i = 1; $i -lt 4 ; $i++)
+   {
+      $resourceGroup = "rg-ntier"
+      $vNetName = "vnet-ntier"
+      $subnetBusinessName = "subnet-business"
+      $nsg = "nsgBusiness"
+      $vmBusinessName = "vmBusinessNTier$i"
+      $image = "Win2019datacenter"
+      $login = "azureUser"
+      $senha = "P4ss0w0rd555*"
+      
+   
+      az vm create `
+      --name $vmBusinessName `
+      --resource-group $resourceGroup `
+      --admin-password $senha `
+      --admin-username $login `
+      --image $image `
+      --no-wait `
+      --vnet-name $vNetName `
+      --subnet $subnetBusinessName `
+      --nsg $nsg `
+      --public-ip-address """"
+   }
 
  ```
 
@@ -416,26 +412,24 @@ Execute o comando a seguir:
    Crie um balanceador de carga interno com **az network lb create.**
 
    **CLI** 
-      ``` 
-         $resourceGroup = "rg-ntier"
-         $vNetName = "vnet-ntier"
-         $subnetBusinessName = "subnet-business"
-         $lbName = "lbBusiness"
-         $frontendIpName = "frontEndBusiness"
-         $backendPoolName = "backEndPoolBusiness"
-         
-         az network lb create `
-         --resource-group $resourceGroup `
-         --name $lbName `
-         --sku Standard `
-         --vnet-name $vNetName `
-         --subnet $subnetBusinessName `
-         --frontend-ip-name $frontendIpName `
-         --backend-pool-name $backendPoolName
-
-
-         
-      ```
+ ``` 
+   $resourceGroup = "rg-ntier"
+   $vNetName = "vnet-ntier"
+   $subnetBusinessName = "subnet-business"
+   $lbName = "lbBusiness"
+   $frontendIpName = "frontEndBusiness"
+   $backendPoolName = "backEndPoolBusiness"
+   
+   az network lb create `
+   --resource-group $resourceGroup `
+   --name $lbName `
+   --sku Standard `
+   --vnet-name $vNetName `
+   --subnet $subnetBusinessName `
+   --frontend-ip-name $frontendIpName `
+   --backend-pool-name $backendPoolName
+  
+ ```
 
 ### Criar a investigação de integridade
 
@@ -445,8 +439,8 @@ Execute o comando a seguir:
 
    Crie uma investigação de integridade com **az network lb probe create.**
 
-   **CLI** 
-      ``` 
+**CLI** 
+   ``` 
          $resourceGroup = "rg-ntier"
          $vNetName = "vnet-ntier"
          $subnetBusinessName = "subnet-business"
@@ -459,10 +453,7 @@ Execute o comando a seguir:
          --name $probeLbBusinessName `
          --protocol tcp `
          --port 80
-
-
-         
-      ```
+   ```
 
 ### Criar uma regra de balanceador de carga
 
@@ -474,7 +465,7 @@ Execute o comando a seguir:
    Crie uma regra de balanceador de carga com az network lb rule create.
 
    **CLI** 
-      ``` 
+ ``` 
          $resourceGroup = "rg-ntier"
          $vNetName = "vnet-ntier"
          $subnetBusinessName = "subnet-business"
@@ -497,16 +488,14 @@ Execute o comando a seguir:
          --probe-name $probeLbBusinessName `
          --idle-timeout 15 `
          --enable-tcp-reset true
-
-
-         
-      ```
-### Adicionar máquinas virtuais ao pool de back-end
+   ```
+  ### Adicionar máquinas virtuais ao pool de back-end
 
    Adicione as máquinas virtuais ao pool de back-end com **az network nic ip-config address-pool add.**
 
    **CLI** 
-      ``` 
+
+   ``` 
          for ($i = 1; $i -lt 4 ; $i++)
          {
             $resourceGroup = "rg-ntier"
@@ -523,7 +512,7 @@ Execute o comando a seguir:
             --lb-name $lbName
          }
          
-      ```
+   ```
 
 ## Criar uma conta de armazenamento
 
