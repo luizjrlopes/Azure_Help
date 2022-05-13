@@ -368,6 +368,7 @@ Execute o comando a seguir:
 
 
 ## Criar máquinas virtuais da camada Business
+**Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
 
    **CLI** 
    ```
@@ -378,7 +379,7 @@ Execute o comando a seguir:
       $vNetName = "vnet-ntier"
       $subnetBusinessName = "subnet-business"
       $nsg = "nsgBusiness"
-      $vmBusinessName = "vmBusNTier$i"
+      $vmBusinessName = "vmBusiNTier$i"
       $image = "Win2019datacenter"
       $login = "azureUser"
       $senha = "P4ss0w0rd555*"
@@ -501,13 +502,13 @@ Execute o comando a seguir:
             $resourceGroup = "rg-ntier"
             $lbName = "lbBusiness"
             $backendPoolName = "backEndPoolBusiness"
-            
+            $nicName = vmBusNTier$iVMNic
          
       
             az network nic ip-config address-pool add `
             --address-pool $backendPoolName `
             --ip-config-name ipconfig1 `
-            --nic-name myNic$vm `
+            --nic-name $nicName `
             --resource-group $resourceGroup `
             --lb-name $lbName
          }
