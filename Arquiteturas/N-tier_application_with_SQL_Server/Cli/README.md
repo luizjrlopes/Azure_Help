@@ -502,7 +502,7 @@ Execute o comando a seguir:
             $resourceGroup = "rg-ntier"
             $lbName = "lbBusiness"
             $backendPoolName = "backEndPoolBusiness"
-            $nicName = "vmBusNTier$iVMNic"
+            $nicName = "vmBusNTier{$i}VMNic"
          
       
             az network nic ip-config address-pool add `
