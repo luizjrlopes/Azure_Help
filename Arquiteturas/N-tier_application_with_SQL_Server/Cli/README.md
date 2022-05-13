@@ -1,21 +1,34 @@
 # Lab 1 - N-tier_application_with_SQL_Server Cli do Azure
 
+![image](../../images/arquiteturaNTier.png)
+
+
 ## Roteiro
+
 + Instalar Cli do Azure no pc local
-+ Criar Vnet
-+ Criar Subnets
-+ Criar arquivo para instalar servidor NGINX nas máquinas virtuais da camada web
-+ Criar Máquinas Virtuais camada Web
-+ Criar Application Gateway
+
++ Criar resource group
++ Criar Vnet e a subnet do Application Gateway 
++ Criar demais Subnets
++ Criar NSG's
++ Criando regras para os NSG's
++ Associar os NSG's às subnets.
 + Criar Bastion Host
-+ Criar arquivo para instalar servidor NGINX nas máquinas virtuais da camada de negócios
-+ Criar Máquinas Virtuais da camada de negócios
-+ Criar Load Balance da camada de negócios
-+ Criar conta de armazenamento para Máquinas Virtuais da camada de banco de dados
-+ Criar Máquinas Virtuais da camada de banco de dados
-+ Criar Load Balance da camada de banco de dados
-+ Criar DNS Publico
-+ criar DDos
++ Criar Máquinas Virtuais da camada Web
++ Criar Application Gateway
++ Criar Máquinas Virtuais da camada Business
++ Criar Azure Load Balancer da camada Business
++ Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
++ Criar conta de armazenamento para Máquinas Virtuais da camada de  Banco de Dados
++ Criar Máquinas Virtuais da camada de  Banco de Dados
++ Associar o armazenamento às maquinas da camada de Banco de Dados
++ Criar Azure Load Balancer da camada de dados
++ Criar uma regra de saída no NSG da camada Business direcionado o trafego para o loadbalancer da camada de  Banco de Dados.
++ Criar DNS Público
++ Criar DDos
++ Deletar recursos do Lab
+
+
 ## Instalando Cli do Azure no PC Local a partir do powershell
 
 Você também pode instalar a CLI do Azure usando o PowerShell.
@@ -77,7 +90,7 @@ Execute o comando a seguir:
    ```
 
 
-## Create a virtual network and a Application Gateway subnet.
+## Criar Vnet e a subnet do Application Gateway.
 
 Execute o comando a seguir:
 
@@ -185,7 +198,7 @@ Execute o comando a seguir:
 
    ```
 
-## Criando NSG's
+## Criar NSG's
 
 Execute o comando a seguir:
 
@@ -233,7 +246,7 @@ Execute o comando a seguir:
    
    ```
 
-## Associando os NSG's às subnets.
+## Associar os NSG's às subnets.
 
 Execute o comando a seguir:
 
@@ -368,6 +381,7 @@ Execute o comando a seguir:
 
 
 ## Criar máquinas virtuais da camada Business
+
 **Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
 
    **CLI** 
@@ -517,7 +531,7 @@ Execute o comando a seguir:
    }
          
    ```
-## Criando uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
+## Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
 
 ## Obtendo o ip do Load Balancer da camada Business
 
@@ -572,8 +586,6 @@ Execute o comando a seguir:
 
 
 
-## Obter informações de configuração da conta de armazenamento
-
 ### Obter o ID do recurso para uma conta de armazenamento
 
 Cada recurso do Azure Resource Manager tem uma ID de recurso associada que o identifica exclusivamente. Certas operações exigem que você forneça o ID do recurso. Você pode obter a ID do recurso para uma conta de armazenamento usando o portal do Azure, PowerShell ou CLI do Azure.
@@ -595,7 +607,19 @@ Execute o comando a seguir:
 
    ```
 
-### Deletar Recursos
+## Criar Máquinas Virtuais da camada de Banco de Dados
+
+## Associar o armazenamento às maquinas da camada de Banco de Dados
+
+## Criar Azure Load Balancer da camada de Banco de Dados
+
+## Criar uma regra de saída no NSG da camada Business direcionado o trafego para o loadbalancer da camada de  Banco de Dados.
+
+## Criar DNS Público
+
+## Criar DDos
+
+## Deletar recursos
 
 Para deletar o grupo de recurso, execute o comando abaixo.
 
@@ -608,22 +632,7 @@ Para deletar o grupo de recurso, execute o comando abaixo.
 
 Quando se deleta o grupo de recursos, todos os recursos contidos nele são deletados. Ao fazer esse processo se certifique que todos o s recursos podem ser excluídos. Caso contrário, exclua-os individualmente.   
 
-#### Revisão
-
-Nesse laboratório, você aprendeu:
-
-+ Instalar Módulo Azure CLI no PC Local
-+ Conectar ao Storage Accounts pelo CLI
-+ Criar uma conta de armazenamento
-+ Obter informações de configuração da conta de armazenamento
-+ Atualizar uma conta de armazenamento
-+ Deletar uma conta de armazenamento
-
-
-
-
 #### Referências
 
-+ https://docs.microsoft.com/pt-br/azure/storage/common/storage-account-create?tabs=azure-cli&source=docs
-+ https://docs.microsoft.com/pt-br/azure/storage/common/storage-account-get-info?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=azure-cli
+
 
