@@ -378,7 +378,7 @@ Execute o comando a seguir:
       $vNetName = "vnet-ntier"
       $subnetBusinessName = "subnet-business"
       $nsg = "nsgBusiness"
-      $vmBusinessName = "vmBusinessNTier$i"
+      $vmBusinessName = "vmBusNTier$i"
       $image = "Win2019datacenter"
       $login = "azureUser"
       $senha = "P4ss0w0rd555*"
