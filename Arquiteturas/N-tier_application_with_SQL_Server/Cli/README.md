@@ -415,7 +415,7 @@ Execute o comando a seguir:
 
    Crie um balanceador de carga interno com **az network lb create.**
 
-      **CLI** 
+   **CLI** 
       ``` 
          $resourceGroup = "rg-ntier"
          $vNetName = "vnet-ntier"
@@ -424,13 +424,13 @@ Execute o comando a seguir:
          $frontendIpName = "frontEndBusiness"
          $backendPoolName = "backEndPoolBusiness"
          
-         az network lb create \
-         --resource-group $resourceGroup \
-         --name $lbName \
-         --sku Standard \
-         --vnet-name $vNetName \
-         --subnet $subnetBusinessName \
-         --frontend-ip-name $frontendIpName \
+         az network lb create `
+         --resource-group $resourceGroup `
+         --name $lbName `
+         --sku Standard `
+         --vnet-name $vNetName `
+         --subnet $subnetBusinessName `
+         --frontend-ip-name $frontendIpName `
          --backend-pool-name $backendPoolName
 
 
@@ -445,7 +445,7 @@ Execute o comando a seguir:
 
    Crie uma investigação de integridade com **az network lb probe create.**
 
-      **CLI** 
+   **CLI** 
       ``` 
          $resourceGroup = "rg-ntier"
          $vNetName = "vnet-ntier"
@@ -453,11 +453,11 @@ Execute o comando a seguir:
          $lbName = "lbBusiness"
          $probeLbBusinessName = "healthProbeBusiness"
          
-         az network lb probe create \
-         --resource-group $resourceGroup \
-         --lb-name $lbName \
-         --name $probeLbBusinessName \
-         --protocol tcp \
+         az network lb probe create `
+         --resource-group $resourceGroup `
+         --lb-name $lbName `
+         --name $probeLbBusinessName `
+         --protocol tcp `
          --port 80
 
 
@@ -473,7 +473,7 @@ Execute o comando a seguir:
 
    Crie uma regra de balanceador de carga com az network lb rule create.
 
-      **CLI** 
+   **CLI** 
       ``` 
          $resourceGroup = "rg-ntier"
          $vNetName = "vnet-ntier"
@@ -485,17 +485,17 @@ Execute o comando a seguir:
          $ruleLbBusinessName= "httpRuleBusiness"
 
          
-         az network lb rule create \
-         --resource-group $resourceGroup \
-         --lb-name $lbName \
-         --name $ruleLbBusinessName \
-         --protocol tcp \
-         --frontend-port 80 \
-         --backend-port 80 \
-         --frontend-ip-name $frontendIpName \
-         --backend-pool-name $backendPoolName \
-         --probe-name $probeLbBusinessName \
-         --idle-timeout 15 \
+         az network lb rule create `
+         --resource-group $resourceGroup `
+         --lb-name $lbName `
+         --name $ruleLbBusinessName `
+         --protocol tcp `
+         --frontend-port 80 `
+         --backend-port 80 `
+         --frontend-ip-name $frontendIpName `
+         --backend-pool-name $backendPoolName `
+         --probe-name $probeLbBusinessName `
+         --idle-timeout 15 `
          --enable-tcp-reset true
 
 
@@ -505,23 +505,23 @@ Execute o comando a seguir:
 
    Adicione as máquinas virtuais ao pool de back-end com **az network nic ip-config address-pool add.**
 
-      **CLI** 
+   **CLI** 
       ``` 
-          for ($i = 1; $i -lt 4 ; $i++)
-            {
-               $resourceGroup = "rg-ntier"
-               $lbName = "lbBusiness"
-               $backendPoolName = "backEndPoolBusiness"
-               
+         for ($i = 1; $i -lt 4 ; $i++)
+         {
+            $resourceGroup = "rg-ntier"
+            $lbName = "lbBusiness"
+            $backendPoolName = "backEndPoolBusiness"
             
          
-               az network nic ip-config address-pool add \
-               --address-pool $backendPoolName \
-               --ip-config-name ipconfig1 \
-               --nic-name myNic$vm \
-               --resource-group $resourceGroup \
-               --lb-name $lbName
-            }
+      
+            az network nic ip-config address-pool add `
+            --address-pool $backendPoolName `
+            --ip-config-name ipconfig1 `
+            --nic-name myNic$vm `
+            --resource-group $resourceGroup `
+            --lb-name $lbName
+         }
          
       ```
 
