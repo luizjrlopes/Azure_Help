@@ -5,7 +5,8 @@
 
 ## Roteiro
 
-+ Criar resource group
++ Criar Grupo de Recursos
+
 + Criar Vnet e a subnet do Application Gateway 
 + Criar demais Subnets
 + Criar NSG's
@@ -14,16 +15,17 @@
 + Criar Bastion Host
 + Criar Máquinas Virtuais da camada Web
 + Criar Application Gateway
-+ Criar Máquinas Virtuais da camada Business
-+ Criar Azure Load Balancer da camada Business
-+ Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
-+ Criar conta de armazenamento para Máquinas Virtuais da camada de  Banco de Dados
-+ Criar Máquinas Virtuais da camada de  Banco de Dados
-+ Associar o armazenamento às maquinas da camada de Banco de Dados
-+ Criar Azure Load Balancer da camada de dados
-+ Criar uma regra de saída no NSG da camada Business direcionado o trafego para o loadbalancer da camada de  Banco de Dados.
 + Criar DNS Público
 + Criar DDos
++ Criar Azure Load Balancer da camada Business
++ Criar Máquinas Virtuais da camada Business
++ Adicionar máquinas virtuais ao pool de back-end
++ Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
++ Criar máquinas virtuais da camada ADDS
++ Criar Azure Load Balancer da camada de Banco de Dados
++ Criar Máquinas Virtuais da camada de  Banco de Dados
++ Adicionar máquinas virtuais ao pool de back-end
++ Criar uma regra de saída no NSG da camada Business direcionado o trafego para o loadbalancer da camada de  Banco de Dados.
 + Deletar recursos do Lab
 
 
@@ -34,7 +36,7 @@ Primeiramente faça login em sua conta do Microsoft Azure. Em seguida abra o clo
 **Obs:** Nesse laboratório usaremos comandos em cli e powershel, então utilize o cloud shell com o powershell.
 
 
-## Criar resource group
+## Criar Grupo de Recursos
 Execute o comando a seguir:
 
 
@@ -148,11 +150,11 @@ Execute o comando a seguir:
   ```
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
-   $subnetAdName = "subnet-ad"
-   $subnetPrefixAd = "10.5.4.0/24"
+   $subnetADDSName = "subnet-adds"
+   $subnetPrefixADDS = "10.5.4.0/24"
 
    echo "Creating subnet AD"
-   az network vnet subnet create --address-prefix $subnetPrefixAd --name $subnetAdName --resource-group $resourceGroup --vnet-name $vNetName
+   az network vnet subnet create --address-prefix $subnetPrefixADDS --name $subnetADDSName --resource-group $resourceGroup --vnet-name $vNetName
 
    ```
 
@@ -171,7 +173,7 @@ Execute o comando a seguir:
    az network nsg create --resource-group $resourceGroup --name "nsgWeb" --location "$location"
    az network nsg create --resource-group $resourceGroup --name "nsgBusiness" --location "$location"
    az network nsg create --resource-group $resourceGroup --name "nsgData" --location "$location"
-   az network nsg create --resource-group $resourceGroup --name "nsgAD" --location "$location"
+   az network nsg create --resource-group $resourceGroup --name "nsgADDS" --location "$location"
 
    ```
 
@@ -187,7 +189,7 @@ Execute o comando a seguir:
 
    az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Gateway --access Allow --protocol Tcp --direction Inbound --priority 101 --source-address-prefix GatewayManager --source-port-range "*" --destination-address-prefix "*" --destination-port-range 65200-65535
 
-    echo "Criando regras para nsgWeb"
+   echo "Criando regras para nsgWeb"
 
       az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
 
@@ -206,6 +208,11 @@ Execute o comando a seguir:
 
    az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgData" --name MSSQLRule --access Allow --protocol Tcp --direction Inbound --priority 1001 --source-address-prefix "10.5.2.0/24" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 1433
 
+   echo "Criando regras para nsgADDS"
+
+      az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgADDS" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
+
+
    
    ```
 
@@ -223,12 +230,12 @@ Execute o comando a seguir:
    $subnetWebName = "subnet-web"
    $subnetBusinessName = "subnet-business"
    $subnetDataName = "subnet-data"
-   $subnetAdName = "subnet-ad"
+   $subnetADDSName = "subnet-adds"
    $nsgApg = "nsgApg"
    $nsgWeb = "nsgWeb"
    $nsgBusiness = "nsgBusiness"
    $nsgData = "nsgData"
-   $nsgAd = "nsgAD"
+   $nsgADDS = "nsgADDS"
    
    echo "Associando nsgApg ao subnetNameApg"
    az network vnet subnet update --vnet-name $vNetName --name $subnetNameApg --resource-group $resourceGroup --network-security-group $nsgApg
@@ -242,8 +249,8 @@ Execute o comando a seguir:
    echo "Associando nsgData ao subnetDataName"
    az network vnet subnet update --vnet-name $vNetName --name $subnetDataName --resource-group $resourceGroup --network-security-group $nsgData
 
-   echo "Associate nsgAd ao subnetAdName"
-   az network vnet subnet update --vnet-name $vNetName --name $subnetAdName --resource-group $resourceGroup --network-security-group $nsgAd
+   echo "Associate nsgADDS ao subnetADDSName"
+   az network vnet subnet update --vnet-name $vNetName --name $subnetADDSName --resource-group $resourceGroup --network-security-group $nsgADDS
 
 
    ```
@@ -474,7 +481,7 @@ Execute o comando a seguir:
    powershell.exe Remove-Item -Path 'C:\inetpub\wwwroot\iisstart.htm'
    powershell.exe Add-Content -Path 'C:\inetpub\wwwroot\iisstart.htm' -Value $($env:computername)
 
-### Adicionar máquinas virtuais ao pool de back-end
+## Adicionar máquinas virtuais ao pool de back-end
 
    Adicione as máquinas virtuais ao pool de back-end com **az network nic ip-config address-pool add.**
 
@@ -501,7 +508,7 @@ Execute o comando a seguir:
    }
          
    ```
-### Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
+## Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
 
 Obtendo o ip do Load Balancer da camada Business
 
@@ -532,6 +539,55 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
 
 
 
+## Criar máquinas virtuais da camada ADDS
+
+
+   **Cloud Shell**  
+   ```
+   $location= "westus"
+   $resourceGroup = "rg-ntier"
+   $nsgADDS = "nsgADDS"
+   $vNetName = "vnet-ntier"
+   $vNetAddress= "10.5.0.0/16"
+   $subnetADDSName = "subnet-adds"
+   $subnetPrefixADDS = "10.5.4.0/24"
+   $availabilitySet= "DomainControllers"
+   $vmSize= "Standard_DS1_v2"
+   $dataDiskSize= 20
+   $image = "Win2019datacenter"
+   $adminUsername= "azureuser"
+   $adminPassword= "P4ss0w0rd555*"
+  
+
+   # Create an availability set.
+   az vm availability-set create `
+   --name $availabilitySet `
+   --resource-group $resourceGroup `
+   --location $location
+
+   for ($i = 1; $i -lt 4 ; $i++)
+   {
+      $name = "domainController$i"
+     
+      $privateIpAddress = "10.5.4.1$i"
+      
+   
+      az vm create `
+    --resource-group $resourceGroup `
+    --availability-set $availabilitySet `
+    --name $$name `
+    --size $vmSize `
+    --image Win2019Datacenter `
+    --admin-username $adminUsername `
+    --admin-password $adminPassword `
+    --data-disk-sizes-gb $dataDiskSize `
+    --data-disk-caching None `
+    --nsg $nsgADDS `
+    --private-ip-address $privateIpAddress `
+    --no-wait `
+    --public-ip-address """"
+   }  
+   ```
 
 
 
@@ -627,7 +683,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
 
 EM REVISÃO
 
-### Criar Máquinas Virtuais da camada de Banco de Dados com uma conta de armazenamento
+## Criar Máquinas Virtuais da camada de Banco de Dados com uma conta de armazenamento
 
 **Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
 
@@ -737,6 +793,8 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
 
    
    ```
+
+   
 
 ## Deletar recursos
 
