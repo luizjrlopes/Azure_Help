@@ -80,13 +80,13 @@ Execute o comando a seguir:
 
  **Cloud Shell**  
   ```
-   $resourceGroup = "rg-ntier"
-   $vNetName = "vnet-ntier"
-   $subnetBastionName = "AzureBastionSubnet"
-   $subnetPrefixBastion = "10.5.254.0/27"
+$resourceGroup = "rg-ntier"
+$vNetName = "vnet-ntier"
+$subnetBastionName = "AzureBastionSubnet"
+$subnetPrefixBastion = "10.5.254.0/27"
 
-   echo "Creating subnet BastionHost"
-   az network vnet subnet create --address-prefix $subnetPrefixBastion --name $subnetBastionName --resource-group $resourceGroup --vnet-name $vNetName
+echo "Creating subnet BastionHost"
+az network vnet subnet create --address-prefix $subnetPrefixBastion --name $subnetBastionName --resource-group $resourceGroup --vnet-name $vNetName
 
    ```
 
@@ -96,13 +96,13 @@ Execute o comando a seguir:
 
  **Cloud Shell**  
   ```
-   $resourceGroup = "rg-ntier"
-   $vNetName = "vnet-ntier"
-   $subnetWebName = "subnet-web"
-   $subnetPrefixWeb = "10.5.1.0/24"
+$resourceGroup = "rg-ntier"
+$vNetName = "vnet-ntier"
+$subnetWebName = "subnet-web"
+$subnetPrefixWeb = "10.5.1.0/24"
 
-   echo "Creating subnet Web"
-   az network vnet subnet create --address-prefix $subnetPrefixWeb --name $subnetWebName --resource-group $resourceGroup --vnet-name $vNetName
+echo "Creating subnet Web"
+az network vnet subnet create --address-prefix $subnetPrefixWeb --name $subnetWebName --resource-group $resourceGroup --vnet-name $vNetName
 
    ```
 
@@ -113,13 +113,13 @@ Execute o comando a seguir:
 
  **Cloud Shell**  
   ```
-   $resourceGroup = "rg-ntier"
-   $vNetName = "vnet-ntier"
-   $subnetBusinessName = "subnet-business"
-   $subnetPrefixBusiness = "10.5.2.0/24"
+$resourceGroup = "rg-ntier"
+$vNetName = "vnet-ntier"
+$subnetBusinessName = "subnet-business"
+$subnetPrefixBusiness = "10.5.2.0/24"
 
-   echo "Creating subnet Bussiness"
-   az network vnet subnet create --address-prefix $subnetPrefixBusiness --name $subnetBusinessName --resource-group $resourceGroup --vnet-name $vNetName
+echo "Creating subnet Bussiness"
+az network vnet subnet create --address-prefix $subnetPrefixBusiness --name $subnetBusinessName --resource-group $resourceGroup --vnet-name $vNetName
 
    ```
 
@@ -129,13 +129,13 @@ Execute o comando a seguir:
 
  **Cloud Shell**  
   ```
-   $resourceGroup = "rg-ntier"
-   $vNetName = "vnet-ntier"
-   $subnetDataName = "subnet-data"
-   $subnetPrefixData = "10.5.3.0/24"
+$resourceGroup = "rg-ntier"
+$vNetName = "vnet-ntier"
+$subnetDataName = "subnet-data"
+$subnetPrefixData = "10.5.3.0/24"
 
-   echo "Creating subnet data"
-   az network vnet subnet create --address-prefix $subnetPrefixData --name $subnetDataName --resource-group $resourceGroup --vnet-name $vNetName
+echo "Creating subnet data"
+az network vnet subnet create --address-prefix $subnetPrefixData --name $subnetDataName --resource-group $resourceGroup --vnet-name $vNetName
 
    ```
 
@@ -148,13 +148,13 @@ Execute o comando a seguir:
 
  **Cloud Shell**  
   ```
-   $resourceGroup = "rg-ntier"
-   $vNetName = "vnet-ntier"
-   $subnetADDSName = "subnet-adds"
-   $subnetPrefixADDS = "10.5.4.0/24"
+$resourceGroup = "rg-ntier"
+$vNetName = "vnet-ntier"
+$subnetADDSName = "subnet-adds"
+$subnetPrefixADDS = "10.5.4.0/24"
 
-   echo "Creating subnet AD"
-   az network vnet subnet create --address-prefix $subnetPrefixADDS --name $subnetADDSName --resource-group $resourceGroup --vnet-name $vNetName
+echo "Creating subnet AD"
+az network vnet subnet create --address-prefix $subnetPrefixADDS --name $subnetADDSName --resource-group $resourceGroup --vnet-name $vNetName
 
    ```
 
@@ -165,15 +165,15 @@ Execute o comando a seguir:
 
  **Cloud Shell**  
   ```
-   $resourceGroup = "rg-ntier"
-   $location = "westus"
-   
-   echo "Creating nsg's"
-   az network nsg create --resource-group $resourceGroup --name "nsgApg" --location "$location"
-   az network nsg create --resource-group $resourceGroup --name "nsgWeb" --location "$location"
-   az network nsg create --resource-group $resourceGroup --name "nsgBusiness" --location "$location"
-   az network nsg create --resource-group $resourceGroup --name "nsgData" --location "$location"
-   az network nsg create --resource-group $resourceGroup --name "nsgADDS" --location "$location"
+$resourceGroup = "rg-ntier"
+$location = "westus"
+
+echo "Creating nsg's"
+az network nsg create --resource-group $resourceGroup --name "nsgApg" --location "$location"
+az network nsg create --resource-group $resourceGroup --name "nsgWeb" --location "$location"
+az network nsg create --resource-group $resourceGroup --name "nsgBusiness" --location "$location"
+az network nsg create --resource-group $resourceGroup --name "nsgData" --location "$location"
+az network nsg create --resource-group $resourceGroup --name "nsgADDS" --location "$location"
 
    ```
 
@@ -181,36 +181,33 @@ Execute o comando a seguir:
 
 **Cloud Shell**  
   ```
-   $resourceGroup = "rg-ntier"
-   $location = "westus"
-   
-   echo "Criando regras para nsgApg"
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Allow-HTTP --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix Internet --source-port-range "*" --destination-address-prefix "*" --destination-port-range 80
+$resourceGroup = "rg-ntier"
+$location = "westus"
 
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Gateway --access Allow --protocol Tcp --direction Inbound --priority 101 --source-address-prefix GatewayManager --source-port-range "*" --destination-address-prefix "*" --destination-port-range 65200-65535
+echo "Criando regras para nsgApg"
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Allow-HTTP --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix Internet --source-port-range "*" --destination-address-prefix "*" --destination-port-range 80
 
-   echo "Criando regras para nsgWeb"
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Gateway --access Allow --protocol Tcp --direction Inbound --priority 101 --source-address-prefix GatewayManager --source-port-range "*" --destination-address-prefix "*" --destination-port-range 65200-65535
 
-      az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
+echo "Criando regras para nsgWeb"
 
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
 
-   echo "Criando regras para nsgBusiness"
+echo "Criando regras para nsgBusiness"
 
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
 
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name AllowBusiness --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix "10.5.1.0/24" --source-port-range "*" --destination-address-prefix "10.5.2.0/24" --destination-port-range 80
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name AllowBusiness --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix "10.5.1.0/24" --source-port-range "*" --destination-address-prefix "10.5.2.0/24" --destination-port-range 80
 
-  
+echo "Criando regras para nsgData"
 
-   echo "Criando regras para nsgData"
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgData" --name AllowRDP --access Allow --protocol Tcp --direction Inbound --priority 1000 --source-address-prefix "10.5.4.0/24" --source-port-range "*" --destination-address-prefix "10.5.3.0/24" --destination-port-range 3389
 
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgData" --name AllowRDP --access Allow --protocol Tcp --direction Inbound --priority 1000 --source-address-prefix "10.5.4.0/24" --source-port-range "*" --destination-address-prefix "10.5.3.0/24" --destination-port-range 3389
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgData" --name MSSQLRule --access Allow --protocol Tcp --direction Inbound --priority 1001 --source-address-prefix "10.5.2.0/24" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 1433
 
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgData" --name MSSQLRule --access Allow --protocol Tcp --direction Inbound --priority 1001 --source-address-prefix "10.5.2.0/24" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 1433
+echo "Criando regras para nsgADDS"
 
-   echo "Criando regras para nsgADDS"
-
-      az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgADDS" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgADDS" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
 
 
    
@@ -223,34 +220,34 @@ Execute o comando a seguir:
 
  **Cloud Shell**  
   ```
-   $resourceGroup = "rg-ntier"
-   $location = "westus"
-   $vNetName = "vnet-ntier"
-   $subnetNameApg = "subnet-apg"
-   $subnetWebName = "subnet-web"
-   $subnetBusinessName = "subnet-business"
-   $subnetDataName = "subnet-data"
-   $subnetADDSName = "subnet-adds"
-   $nsgApg = "nsgApg"
-   $nsgWeb = "nsgWeb"
-   $nsgBusiness = "nsgBusiness"
-   $nsgData = "nsgData"
-   $nsgADDS = "nsgADDS"
-   
-   echo "Associando nsgApg ao subnetNameApg"
-   az network vnet subnet update --vnet-name $vNetName --name $subnetNameApg --resource-group $resourceGroup --network-security-group $nsgApg
-  
-   echo "Associando nsgWeb ao subnetWebName"
-   az network vnet subnet update --vnet-name $vNetName --name $subnetWebName --resource-group $resourceGroup --network-security-group $nsgWeb
-  
-   echo "Associando nsgBusiness ao subnetBusinessName"
-   az network vnet subnet update --vnet-name $vNetName --name $subnetBusinessName --resource-group $resourceGroup --network-security-group $nsgBusiness
+$resourceGroup = "rg-ntier"
+$location = "westus"
+$vNetName = "vnet-ntier"
+$subnetNameApg = "subnet-apg"
+$subnetWebName = "subnet-web"
+$subnetBusinessName = "subnet-business"
+$subnetDataName = "subnet-data"
+$subnetADDSName = "subnet-adds"
+$nsgApg = "nsgApg"
+$nsgWeb = "nsgWeb"
+$nsgBusiness = "nsgBusiness"
+$nsgData = "nsgData"
+$nsgADDS = "nsgADDS"
 
-   echo "Associando nsgData ao subnetDataName"
-   az network vnet subnet update --vnet-name $vNetName --name $subnetDataName --resource-group $resourceGroup --network-security-group $nsgData
+echo "Associando nsgApg ao subnetNameApg"
+az network vnet subnet update --vnet-name $vNetName --name $subnetNameApg --resource-group $resourceGroup --network-security-group $nsgApg
 
-   echo "Associate nsgADDS ao subnetADDSName"
-   az network vnet subnet update --vnet-name $vNetName --name $subnetADDSName --resource-group $resourceGroup --network-security-group $nsgADDS
+echo "Associando nsgWeb ao subnetWebName"
+az network vnet subnet update --vnet-name $vNetName --name $subnetWebName --resource-group $resourceGroup --network-security-group $nsgWeb
+
+echo "Associando nsgBusiness ao subnetBusinessName"
+az network vnet subnet update --vnet-name $vNetName --name $subnetBusinessName --resource-group $resourceGroup --network-security-group $nsgBusiness
+
+echo "Associando nsgData ao subnetDataName"
+az network vnet subnet update --vnet-name $vNetName --name $subnetDataName --resource-group $resourceGroup --network-security-group $nsgData
+
+echo "Associate nsgADDS ao subnetADDSName"
+az network vnet subnet update --vnet-name $vNetName --name $subnetADDSName --resource-group $resourceGroup --network-security-group $nsgADDS
 
 
    ```
@@ -260,15 +257,15 @@ Execute o comando a seguir:
 
 **Cloud Shell**  
   ```
-   $resourceGroup = "rg-ntier"
-   $location = "westus"
-   $vNetName = "vnet-ntier"
-   $publicIpBastionName = "publicIpBastion"
-   $bastionName = "bastionNTier"
+$resourceGroup = "rg-ntier"
+$location = "westus"
+$vNetName = "vnet-ntier"
+$publicIpBastionName = "publicIpBastion"
+$bastionName = "bastionNTier"
 
-   az network public-ip create --resource-group $resourceGroup --name $publicIpBastionName  --sku Standard --location $location
+az network public-ip create --resource-group $resourceGroup --name $publicIpBastionName  --sku Standard --location $location
 
-   az network bastion create --name $bastionName --public-ip-address $publicIpBastionName --resource-group $resourceGroup --vnet-name $vNetName --location $location
+az network bastion create --name $bastionName --public-ip-address $publicIpBastionName --resource-group $resourceGroup --vnet-name $vNetName --location $location
    ```
 
 
@@ -278,36 +275,38 @@ Execute o comando a seguir:
    ```
    for ($i = 1; $i -lt 4 ; $i++)
    {
-      $resourceGroup = "rg-ntier"
-      $vNetName = "vnet-ntier"
-      $subnetWebName = "subnet-web"
-      $nsg = "nsgWeb"
-      $vmWebName = "vmWebNTier$i"
-      $image = "Win2019datacenter"
-      $login = "azureUser"
-      $senha = "P4ss0w0rd555*"
-      
+   $resourceGroup = "rg-ntier"
+   $vNetName = "vnet-ntier"
+   $subnetWebName = "subnet-web"
+   $nsg = "nsgWeb"
+   $vmWebName = "vmWebNTier$i"
+   $image = "Win2019datacenter"
+   $login = "azureUser"
+   $senha = "P4ss0w0rd555*"
    
-      az vm create `
-      --name $vmWebName `
-      --resource-group $resourceGroup `
-      --admin-password $senha `
-      --admin-username $login `
-      --image $image `
-      --no-wait `
-      --vnet-name $vNetName `
-      --subnet $subnetWebName `
-      --nsg $nsg `
-      --public-ip-address """"
-   }  
-   ```
+
+   az vm create `
+   --name $vmWebName `
+   --resource-group $resourceGroup `
+   --admin-password $senha `
+   --admin-username $login `
+   --image $image `
+   --no-wait `
+   --vnet-name $vNetName `
+   --subnet $subnetWebName `
+   --nsg $nsg `
+   --public-ip-address """"
+}  
+```
 
    Após a criação das vms, inserir comando abaixo em cada vm pelo Run comand no portal e desligar e ligar vm's novamente.
 
-
-      powershell.exe Install-WindowsFeature -name Web-Server -IncludeManagementTools
-      powershell.exe Remove-Item -Path 'C:\inetpub\wwwroot\iisstart.htm'
-      powershell.exe Add-Content -Path 'C:\inetpub\wwwroot\iisstart.htm' -Value $($env:computername)
+**Run Command**  
+   ```
+   powershell.exe Install-WindowsFeature -name Web-Server -IncludeManagementTools
+   powershell.exe Remove-Item -Path 'C:\inetpub\wwwroot\iisstart.htm'
+   powershell.exe Add-Content -Path 'C:\inetpub\wwwroot\iisstart.htm' -Value $($env:computername)
+   ```
 
 ## Criar Application Gateway
 
@@ -315,14 +314,14 @@ Execute o comando a seguir:
 
    **Cloud Shell**  
    ``` 
-      $resourceGroup = "rg-ntier"
-      $vm1WebName = "vmWebNTier1"
-      $vm2WebName = "vmWebNTier2"
-      $vm3WebName = "vmWebNTier3"
+   $resourceGroup = "rg-ntier"
+   $vm1WebName = "vmWebNTier1"
+   $vm2WebName = "vmWebNTier2"
+   $vm3WebName = "vmWebNTier3"
 
-      az vm list-ip-addresses -g $resourceGroup -n $vm1WebName
-      az vm list-ip-addresses -g $resourceGroup -n $vm2WebName
-      az vm list-ip-addresses -g $resourceGroup -n $vm3WebName
+   az vm list-ip-addresses -g $resourceGroup -n $vm1WebName
+   az vm list-ip-addresses -g $resourceGroup -n $vm2WebName
+   az vm list-ip-addresses -g $resourceGroup -n $vm3WebName
    ```
 
    Agora vamos implatar o Application Gateway
@@ -361,21 +360,21 @@ Execute o comando a seguir:
 
    **Cloud Shell**  
  ``` 
-   $resourceGroup = "rg-ntier"
-   $vNetName = "vnet-ntier"
-   $subnetBusinessName = "subnet-business"
-   $lbName = "lbBusiness"
-   $frontendIpName = "frontEndBusiness"
-   $backendPoolName = "backEndPoolBusiness"
-   
-   az network lb create `
-   --resource-group $resourceGroup `
-   --name $lbName `
-   --sku Standard `
-   --vnet-name $vNetName `
-   --subnet $subnetBusinessName `
-   --frontend-ip-name $frontendIpName `
-   --backend-pool-name $backendPoolName
+$resourceGroup = "rg-ntier"
+$vNetName = "vnet-ntier"
+$subnetBusinessName = "subnet-business"
+$lbName = "lbBusiness"
+$frontendIpName = "frontEndBusiness"
+$backendPoolName = "backEndPoolBusiness"
+
+az network lb create `
+--resource-group $resourceGroup `
+--name $lbName `
+--sku Standard `
+--vnet-name $vNetName `
+--subnet $subnetBusinessName `
+--frontend-ip-name $frontendIpName `
+--backend-pool-name $backendPoolName
   
  ```
 
@@ -414,28 +413,28 @@ Execute o comando a seguir:
 
    **Cloud Shell**  
  ``` 
-   $resourceGroup = "rg-ntier"
-   $vNetName = "vnet-ntier"
-   $subnetBusinessName = "subnet-business"
-   $lbName = "lbBusiness"
-   $frontendIpName = "frontEndBusiness"
-   $backendPoolName = "backEndPoolBusiness"
-   $probeLbBusinessName = "healthProbeBusiness"
-   $ruleLbBusinessName= "httpRuleBusiness"
+$resourceGroup = "rg-ntier"
+$vNetName = "vnet-ntier"
+$subnetBusinessName = "subnet-business"
+$lbName = "lbBusiness"
+$frontendIpName = "frontEndBusiness"
+$backendPoolName = "backEndPoolBusiness"
+$probeLbBusinessName = "healthProbeBusiness"
+$ruleLbBusinessName= "httpRuleBusiness"
 
-   
-   az network lb rule create `
-   --resource-group $resourceGroup `
-   --lb-name $lbName `
-   --name $ruleLbBusinessName `
-   --protocol tcp `
-   --frontend-port 80 `
-   --backend-port 80 `
-   --frontend-ip-name $frontendIpName `
-   --backend-pool-name $backendPoolName `
-   --probe-name $probeLbBusinessName `
-   --idle-timeout 15 `
-   --enable-tcp-reset true
+
+az network lb rule create `
+--resource-group $resourceGroup `
+--lb-name $lbName `
+--name $ruleLbBusinessName `
+--protocol tcp `
+--frontend-port 80 `
+--backend-port 80 `
+--frontend-ip-name $frontendIpName `
+--backend-pool-name $backendPoolName `
+--probe-name $probeLbBusinessName `
+--idle-timeout 15 `
+--enable-tcp-reset true
    ```
 
 
@@ -448,8 +447,8 @@ Execute o comando a seguir:
    **Cloud Shell**  
    ```
 
-   for ($i = 1; $i -lt 4 ; $i++)
-   {
+for ($i = 1; $i -lt 4 ; $i++)
+{
       $resourceGroup = "rg-ntier"
       $vNetName = "vnet-ntier"
       $subnetBusinessName = "subnet-business"
@@ -459,7 +458,7 @@ Execute o comando a seguir:
       $login = "azureUser"
       $senha = "P4ss0w0rd555*"
       
-   
+
       az vm create `
       --name $vmBusinessName `
       --resource-group $resourceGroup `
@@ -471,7 +470,7 @@ Execute o comando a seguir:
       --subnet $subnetBusinessName `
       --nsg $nsg `
       --public-ip-address """"
-   }
+}
 
  ```
 
@@ -568,11 +567,9 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
    for ($i = 1; $i -lt 4 ; $i++)
    {
       $name = "domainController$i"
-     
       $privateIpAddress = "10.5.4.1$i"
       
-   
-      az vm create `
+    az vm create `
     --resource-group $resourceGroup `
     --availability-set $availabilitySet `
     --name $$name `
@@ -701,41 +698,39 @@ EM REVISÃO
    
    for ($i = 1; $i -lt 3 ; $i++)
    {
-      
-      
-           
-      ## Network
-      
-      $InterfaceName = "vmDataNTier"+ $i + "ServerNIC"
-      $Nsg = Get-AzNetworkSecurityGroup -Name "nsgData" -ResourceGroupName $resourceGroup
-      $vnet = Get-AzVirtualNetwork -Name "vnet-ntier" -ResourceGroupName $resourceGroup
-      $Subnet = Get-AzVirtualNetworkSubnetConfig -Name "subnet-data" -VirtualNetwork $vnet  
-      $Interface = New-AzNetworkInterface -Name $InterfaceName -ResourceGroupName $resourceGroup -Location $Location -SubnetId $Subnet.Id  -NetworkSecurityGroupId $Nsg.Id
+        
+   ## Network
+   
+   $InterfaceName = "vmDataNTier"+ $i + "ServerNIC"
+   $Nsg = Get-AzNetworkSecurityGroup -Name "nsgData" -ResourceGroupName $resourceGroup
+   $vnet = Get-AzVirtualNetwork -Name "vnet-ntier" -ResourceGroupName $resourceGroup
+   $Subnet = Get-AzVirtualNetworkSubnetConfig -Name "subnet-data" -VirtualNetwork $vnet  
+   $Interface = New-AzNetworkInterface -Name $InterfaceName -ResourceGroupName $resourceGroup -Location $Location -SubnetId $Subnet.Id  -NetworkSecurityGroupId $Nsg.Id
 
 
-      ##Image
-      $PublisherName = "MicrosoftSQLServer"
-      $OfferName = "SQL2017-WS2016"
-      $Sku = "SQLDEV"
-      $Version = "latest"
+   ##Image
+   $PublisherName = "MicrosoftSQLServer"
+   $OfferName = "SQL2017-WS2016"
+   $Sku = "SQLDEV"
+   $Version = "latest"
 
-      ##Compute
-      $vmDataName = "vmDataNTier$i"
-      $ComputerName = $resourceGroup + "Server"
-      $VMSize = "Standard_DS13_v2"
-      $OSDiskName = $vmDataName + "OSDisk"
-      $VirtualMachine = New-AzVMConfig -VMName $vmDataName -VMSize $VMSize
-      $Credential = Get-Credential -Message "Type the name and password of the local administrator account."
-      $VirtualMachine = Set-AzVMOperatingSystem -VM $VirtualMachine -Windows -ComputerName $ComputerName -Credential $Credential -ProvisionVMAgent -EnableAutoUpdate #-TimeZone = $TimeZone
-      $VirtualMachine = Add-AzVMNetworkInterface -VM $VirtualMachine -Id $Interface.Id
-      $OSDiskUri = $StorageAccount.PrimaryEndpoints.Blob.ToString() + "vhds/" + $OSDiskName + ".vhd"
-      $VirtualMachine = Set-AzVMOSDisk -VM $VirtualMachine -Name $OSDiskName -VhdUri $OSDiskUri -Caching ReadOnly -CreateOption FromImage
+   ##Compute
+   $vmDataName = "vmDataNTier$i"
+   $ComputerName = $resourceGroup + "Server"
+   $VMSize = "Standard_DS13_v2"
+   $OSDiskName = $vmDataName + "OSDisk"
+   $VirtualMachine = New-AzVMConfig -VMName $vmDataName -VMSize $VMSize
+   $Credential = Get-Credential -Message "Type the name and password of the local administrator account."
+   $VirtualMachine = Set-AzVMOperatingSystem -VM $VirtualMachine -Windows -ComputerName $ComputerName -Credential $Credential -ProvisionVMAgent -EnableAutoUpdate #-TimeZone = $TimeZone
+   $VirtualMachine = Add-AzVMNetworkInterface -VM $VirtualMachine -Id $Interface.Id
+   $OSDiskUri = $StorageAccount.PrimaryEndpoints.Blob.ToString() + "vhds/" + $OSDiskName + ".vhd"
+   $VirtualMachine = Set-AzVMOSDisk -VM $VirtualMachine -Name $OSDiskName -VhdUri $OSDiskUri -Caching ReadOnly -CreateOption FromImage
 
-      # Create the VM in Azure
-      New-AzVM -ResourceGroupName $resourceGroup -Location $Location -VM $VirtualMachine
+   # Create the VM in Azure
+   New-AzVM -ResourceGroupName $resourceGroup -Location $Location -VM $VirtualMachine
 
-      # Add the SQL IaaS Extension, and choose the license type
-      New-AzSqlVM -ResourceGroupName $resourceGroup -Name $VirtualMachine -Location $Location -LicenseType PAYG
+   # Add the SQL IaaS Extension, and choose the license type
+   New-AzSqlVM -ResourceGroupName $resourceGroup -Name $VirtualMachine -Location $Location -LicenseType PAYG
    }
    ```
 
@@ -802,9 +797,9 @@ Para deletar o grupo de recurso, execute o comando abaixo.
 
   **Cloud Shell** 
   ```
-   $name = "rg-ntier"
-  
-   az group delete --name $name
+$name = "rg-ntier"
+
+az group delete --name $name
    ``` 
 
 Quando se deleta o grupo de recursos, todos os recursos contidos nele são deletados. Ao fazer esse processo se certifique que todos o s recursos podem ser excluídos. Caso contrário, exclua-os individualmente.   
