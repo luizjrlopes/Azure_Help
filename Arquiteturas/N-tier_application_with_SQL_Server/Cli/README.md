@@ -236,12 +236,17 @@ Execute o comando a seguir:
 
    echo "Criando regras para nsgBusiness"
 
+   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
+
    az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name AllowBusiness --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix "10.5.1.0/24" --source-port-range "*" --destination-address-prefix "10.5.2.0/24" --destination-port-range 80
 
   
 
    echo "Criando regras para nsgData"
-   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgData" --name AllowData --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix "10.5.2.0/24" --source-port-range "*" --destination-address-prefix "10.5.3.0/24" --destination-port-range 3002
+
+   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgData" --name AllowRDP --access Allow --protocol Tcp --direction Inbound --priority 1000 --source-address-prefix "10.5.4.0/24" --source-port-range "*" --destination-address-prefix "10.5.3.0/24" --destination-port-range 3389
+
+   az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgData" --name MSSQLRule --access Allow --protocol Tcp --direction Inbound --priority 1001 --source-address-prefix "10.5.2.0/24" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 1433
 
    
    ```
@@ -378,47 +383,10 @@ Execute o comando a seguir:
    --public-ip-address $publicIpApgName --servers $ipVMWeb1 $ipVMWeb2 $ipVMWeb3 
 
    ```
+## Criar DNS Público
 
+## Criar DDos
 
-## Criar máquinas virtuais da camada Business
-
-**Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
-
-   **CLI** 
-   ```
-
-   for ($i = 1; $i -lt 4 ; $i++)
-   {
-      $resourceGroup = "rg-ntier"
-      $vNetName = "vnet-ntier"
-      $subnetBusinessName = "subnet-business"
-      $nsg = "nsgBusiness"
-      $vmBusinessName = "vmBusiNTier$i"
-      $image = "Win2019datacenter"
-      $login = "azureUser"
-      $senha = "P4ss0w0rd555*"
-      
-   
-      az vm create `
-      --name $vmBusinessName `
-      --resource-group $resourceGroup `
-      --admin-password $senha `
-      --admin-username $login `
-      --image $image `
-      --no-wait `
-      --vnet-name $vNetName `
-      --subnet $subnetBusinessName `
-      --nsg $nsg `
-      --public-ip-address """"
-   }
-
- ```
-
-   Após a criação das vms, inserir comando abaixo em cada vm pelo Run comand no portal e desligar e ligar vm's novamente.
-
-   powershell.exe Install-WindowsFeature -name Web-Server -IncludeManagementTools
-   powershell.exe Remove-Item -Path 'C:\inetpub\wwwroot\iisstart.htm'
-   powershell.exe Add-Content -Path 'C:\inetpub\wwwroot\iisstart.htm' -Value $($env:computername)
 
 ## Criar Azure Load Balancer da camada Business
 
@@ -504,7 +472,51 @@ Execute o comando a seguir:
    --idle-timeout 15 `
    --enable-tcp-reset true
    ```
-  ### Adicionar máquinas virtuais ao pool de back-end
+
+
+
+
+### Criar máquinas virtuais da camada Business
+
+**Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
+
+   **CLI** 
+   ```
+
+   for ($i = 1; $i -lt 4 ; $i++)
+   {
+      $resourceGroup = "rg-ntier"
+      $vNetName = "vnet-ntier"
+      $subnetBusinessName = "subnet-business"
+      $nsg = "nsgBusiness"
+      $vmBusinessName = "vmBusiNTier$i"
+      $image = "Win2019datacenter"
+      $login = "azureUser"
+      $senha = "P4ss0w0rd555*"
+      
+   
+      az vm create `
+      --name $vmBusinessName `
+      --resource-group $resourceGroup `
+      --admin-password $senha `
+      --admin-username $login `
+      --image $image `
+      --no-wait `
+      --vnet-name $vNetName `
+      --subnet $subnetBusinessName `
+      --nsg $nsg `
+      --public-ip-address """"
+   }
+
+ ```
+
+   Após a criação das vms, inserir comando abaixo em cada vm pelo Run comand no portal e desligar e ligar vm's novamente.
+
+   powershell.exe Install-WindowsFeature -name Web-Server -IncludeManagementTools
+   powershell.exe Remove-Item -Path 'C:\inetpub\wwwroot\iisstart.htm'
+   powershell.exe Add-Content -Path 'C:\inetpub\wwwroot\iisstart.htm' -Value $($env:computername)
+
+### Adicionar máquinas virtuais ao pool de back-end
 
    Adicione as máquinas virtuais ao pool de back-end com **az network nic ip-config address-pool add.**
 
@@ -531,9 +543,9 @@ Execute o comando a seguir:
    }
          
    ```
-## Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
+### Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
 
-## Obtendo o ip do Load Balancer da camada Business
+Obtendo o ip do Load Balancer da camada Business
 
 **CLI** 
   ```
@@ -543,7 +555,7 @@ Execute o comando a seguir:
   az network lb frontend-ip list -g $resourceGroup --lb-name $lbName
    ```
 
-## Criando regra de saída
+Criando regra de saída
 
 **CLI** 
   ```
@@ -558,66 +570,215 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
 
    
    ```
-## Criar uma conta de armazenamento para a camada de dados
-
-Uma conta de armazenamento é um recurso do Azure Resource Manager. O Resource Manager é o serviço de implantação e gerenciamento do Azure. Para obter mais informações, consulte [Visão geral do Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview) .
- 
-**Obs:** O nome da conta de armazenamento deve ter entre 3 e 24 caracteres e usar apenas números e letras minúsculas.
-
-Execute o comando a seguir:
 
 
- **powershell** 
-   ```
-   $name = "storageaccountlabntier"
+
+
+
+
+
+
+
+
+## Criar Azure Load Balancer da camada de Banco de dados
+
+### Criar o recurso do balanceador de carga
+
+   Crie um balanceador de carga interno com **az network lb create.**
+
+   **CLI** 
+ ``` 
    $resourceGroup = "rg-ntier"
-   $location = "westus"
-   $sku = "Standard_RAGRS"
-   $kind = "StorageV2"
-
-   az storage account create `
-   --name $name `
+   $vNetName = "vnet-ntier"
+   $subnetDataName = "subnet-data"
+   $lbName = "lbData"
+   $frontendIpName = "frontEndData"
+   $backendPoolName = "backEndPoolData"
+   
+   az network lb create `
    --resource-group $resourceGroup `
-   --location $location `
-   --sku $sku `
-   --kind $kind
+   --name $lbName `
+   --sku Standard `
+   --vnet-name $vNetName `
+   --subnet $subnetDataName `
+   --frontend-ip-name $frontendIpName `
+   --backend-pool-name $backendPoolName
+  
+ ```
 
+### Criar a investigação de integridade
+
+   Uma investigação de integridade verifica todas as instâncias da máquina virtual para garantir que elas possam enviar tráfego de rede.
+
+   Uma máquina virtual com uma verificação de investigação com falha é removida do balanceador de carga. A máquina virtual será adicionada novamente ao balanceador de carga quando a falha for resolvida.
+
+   Crie uma investigação de integridade com **az network lb probe create.**
+
+**CLI** 
+   ``` 
+   $resourceGroup = "rg-ntier"
+   $vNetName = "vnet-ntier"
+   $subnetDataName = "subnet-data"
+   $lbName = "lbData"
+   $probeLbDataName = "healthProbeData"
+   
+   az network lb probe create `
+   --resource-group $resourceGroup `
+   --lb-name $lbName `
+   --name $probeLbDataName `
+   --protocol tcp `
+   --port 80
+   ```
+
+### Criar uma regra de balanceador de carga
+
+   Uma regra de balanceador de carga define:
+   + A configuração do IP de front-end para o tráfego de entrada
+   + O pool de IPs de back-end para receber o tráfego
+   + As portas de origem e de destino necessárias
+
+   Crie uma regra de balanceador de carga com az network lb rule create.
+
+   **CLI** 
+ ``` 
+   $resourceGroup = "rg-ntier"
+   $vNetName = "vnet-ntier"
+   $subnetDataName = "subnet-data"
+   $lbName = "lbBusiness"
+   $frontendIpName = "frontEndData"
+   $backendPoolName = "backEndPoolData"
+   $probeLbBusinessName = "healthProbeData"
+   $ruleLbBusinessName= "httpRuleData"
+
+   
+   az network lb rule create `
+   --resource-group $resourceGroup `
+   --lb-name $lbName `
+   --name $ruleLbBusinessName `
+   --protocol tcp `
+   --frontend-port 80 `
+   --backend-port 80 `
+   --frontend-ip-name $frontendIpName `
+   --backend-pool-name $backendPoolName `
+   --probe-name $probeLbBusinessName `
+   --idle-timeout 15 `
+   --enable-tcp-reset true
    ```
 
 
 
-### Obter o ID do recurso para uma conta de armazenamento
+EM REVISÃO
 
-Cada recurso do Azure Resource Manager tem uma ID de recurso associada que o identifica exclusivamente. Certas operações exigem que você forneça o ID do recurso. Você pode obter a ID do recurso para uma conta de armazenamento usando o portal do Azure, PowerShell ou CLI do Azure.
+### Criar Máquinas Virtuais da camada de Banco de Dados com uma conta de armazenamento
+
+**Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
+
+**CLI** 
+   ```powershell
+
+      ## Global
+      $Location = "westus"
+      $resourceGroup = "rg-ntier"
+
+      # Storage
+      $StorageName = "rgntierstoragelab"
+      $StorageSku = "Premium_LRS"
+      $StorageAccount = New-AzStorageAccount -ResourceGroupName $resourceGroup -Name $StorageName -SkuName $StorageSku -Kind "Storage" -Location $Location
+   
+   for ($i = 1; $i -lt 3 ; $i++)
+   {
+      
+      
+           
+      ## Network
+      
+      $InterfaceName = "vmDataNTier"+ $i + "ServerNIC"
+      $Nsg = Get-AzNetworkSecurityGroup -Name "nsgData" -ResourceGroupName $resourceGroup
+      $vnet = Get-AzVirtualNetwork -Name "vnet-ntier" -ResourceGroupName $resourceGroup
+      $Subnet = Get-AzVirtualNetworkSubnetConfig -Name "subnet-data" -VirtualNetwork $vnet  
+      $Interface = New-AzNetworkInterface -Name $InterfaceName -ResourceGroupName $resourceGroup -Location $Location -SubnetId $Subnet.Id  -NetworkSecurityGroupId $Nsg.Id
 
 
-Execute o comando a seguir:
+      ##Image
+      $PublisherName = "MicrosoftSQLServer"
+      $OfferName = "SQL2017-WS2016"
+      $Sku = "SQLDEV"
+      $Version = "latest"
 
+      ##Compute
+      $vmDataName = "vmDataNTier$i"
+      $ComputerName = $resourceGroup + "Server"
+      $VMSize = "Standard_DS13_v2"
+      $OSDiskName = $vmDataName + "OSDisk"
+      $VirtualMachine = New-AzVMConfig -VMName $vmDataName -VMSize $VMSize
+      $Credential = Get-Credential -Message "Type the name and password of the local administrator account."
+      $VirtualMachine = Set-AzVMOperatingSystem -VM $VirtualMachine -Windows -ComputerName $ComputerName -Credential $Credential -ProvisionVMAgent -EnableAutoUpdate #-TimeZone = $TimeZone
+      $VirtualMachine = Add-AzVMNetworkInterface -VM $VirtualMachine -Id $Interface.Id
+      $OSDiskUri = $StorageAccount.PrimaryEndpoints.Blob.ToString() + "vhds/" + $OSDiskName + ".vhd"
+      $VirtualMachine = Set-AzVMOSDisk -VM $VirtualMachine -Name $OSDiskName -VhdUri $OSDiskUri -Caching ReadOnly -CreateOption FromImage
 
- **powershell** 
+      # Create the VM in Azure
+      New-AzVM -ResourceGroupName $resourceGroup -Location $Location -VM $VirtualMachine
+
+      # Add the SQL IaaS Extension, and choose the license type
+      New-AzSqlVM -ResourceGroupName $resourceGroup -Name $VirtualMachine -Location $Location -LicenseType PAYG
+   }
    ```
-   $name = "storage-account-name"
-   $resourceGroup = "resource-group"
 
-   az storage account show `
-    --name $name `
-    --resource-group $resourceGroup `
-    --query id `
-    --output tsv
+### Adicionar máquinas virtuais ao pool de back-end
 
+   Adicione as máquinas virtuais ao pool de back-end com **az network nic ip-config address-pool add.**
+
+   **Obs:** O **--ip-config-name** é a junção do radical **ipconfig** com o nome de cada vm.
+
+   **CLI** 
+
+   ``` 
+   for ($i = 1; $i -lt 4 ; $i++)
+   {
+      $resourceGroup = "rg-ntier"
+      $lbName = "lbData"
+      $backendPoolName = "backEndPoolData"
+      $nicName = "vmDataNTier"+$i+"Nic"
+      $ipConfigName = "ipconfigvmDataNTier$i"
+   
+
+      az network nic ip-config address-pool add `
+      --address-pool $backendPoolName `
+      --ip-config-name $ipConfigName `
+      --nic-name $nicName `
+      --resource-group $resourceGroup `
+      --lb-name $lbName
+   }
+         
+   ```
+### Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
+
+Obtendo o ip do Load Balancer da camada de Banco de Dados
+
+**CLI** 
+  ```
+  $resourceGroup = "rg-ntier"
+  $lbName = "lbData"
+ 
+  az network lb frontend-ip list -g $resourceGroup --lb-name $lbName
    ```
 
-## Criar Máquinas Virtuais da camada de Banco de Dados
+Criando regra de saída
 
-## Associar o armazenamento às maquinas da camada de Banco de Dados
+**CLI** 
+  ```
+$resourceGroup = "rg-ntier"
+$location = "westus"
+$ipFrontLbData = "10.5.3.6"
+   
+   
+echo "Criando regras para nsgBusiness"
 
-## Criar Azure Load Balancer da camada de Banco de Dados
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name lbData --access Allow --protocol Tcp --direction Outbound --priority 120 --source-address-prefix "*" --source-port-range "*" --destination-address-prefix "$ipFrontLbBusiness" --destination-port-range 1443
 
-## Criar uma regra de saída no NSG da camada Business direcionado o trafego para o loadbalancer da camada de  Banco de Dados.
-
-## Criar DNS Público
-
-## Criar DDos
+   
+   ```
 
 ## Deletar recursos
 
