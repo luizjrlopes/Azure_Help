@@ -5,8 +5,6 @@
 
 ## Roteiro
 
-+ Instalar Cli do Azure no pc local
-
 + Criar resource group
 + Criar Vnet e a subnet do Application Gateway 
 + Criar demais Subnets
@@ -29,58 +27,18 @@
 + Deletar recursos do Lab
 
 
-## Instalando Cli do Azure no PC Local a partir do powershell
+## Abra o cloud shell no portal do Azure
 
-Você também pode instalar a CLI do Azure usando o PowerShell.
+Primeiramente faça login em sua conta do Microsoft Azure. Em seguida abra o cloud Shell.
 
-### Abra o powershell como administrador
+**Obs:** Nesse laboratório usaremos comandos em cli e powershel, então utilize o cloud shell com o powershell.
 
-Execute o comando a seguir:
-
-
- **powershell** 
-  ```powershell
-   $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
-   ```
-
-Isso baixará e instalará a versão mais recente da CLI do Azure para Windows. Se você já tiver uma versão instalada, o instalador atualizará a versão existente.
-
-Para instalar uma versão específica, substitua o argumento ```-Uri```  pelo ```https://azcliprod.blob.core.windows.net/msi/azure-cli-<version>.msi```, colocando a versão desejada no campo **\<version>**. As versões disponíveis podem ser encontradas nas [notas de versão da CLI do Azure](https://docs.microsoft.com/en-us/cli/azure/release-notes-azure-cli) .
-
-**Obs:** Para utilizar o módulo do CLI após a instalação, feche e abra novamente o powershell como administrador.
-
-
-
-## Faça login pelo CLI
-
-Primeiramente faça login em sua conta.
-Você continuará na interface do powershell, entretando usando o módulo do cli.
-
-Execute o comando a seguir:
-
- **cli** 
-  ```
-   az login --tenant <digite o ID do tenant>
-   ```
-  **Exemplo** 
-  ```
-   az login --tenant 11a11a11-1aa1-a11a-11a1-1111a1111a11
-   ```
-
-
-Uma aba de navegador abrirá para que se possa fazer o login em sua conta. faça o login, fecha a tela e volte ao terminal do powershell.
-
-**Obs:** O valor do Tenant ID é encontrado dentro do seu diretório do Azure AD no portal. Se não colocar o tenant ID pode ocorrer erro de autorização na hora de executar os cmdlets.
-
-![image](../../../AZ-104/imagens/imagensTenantIDAAD.png)
-
-**Obs:** Caso apareça uma tela de erro, informando que o comando não existe, basta fechar o powershell, abri-lo novamente e repetir o comando **az login**.
 
 ## Criar resource group
 Execute o comando a seguir:
 
 
- **CLI** 
+ **Cloud Shell** 
   ```
    $name = "rg-ntier"
    $location = "westus"
@@ -95,7 +53,7 @@ Execute o comando a seguir:
 Execute o comando a seguir:
 
 
- **CLI** 
+ **Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $location = "westus"
@@ -118,7 +76,7 @@ Execute o comando a seguir:
 Execute o comando a seguir:
 
 
- **CLI** 
+ **Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -134,7 +92,7 @@ Execute o comando a seguir:
 Execute o comando a seguir:
 
 
- **CLI** 
+ **Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -151,7 +109,7 @@ Execute o comando a seguir:
 Execute o comando a seguir:
 
 
- **CLI** 
+ **Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -167,7 +125,7 @@ Execute o comando a seguir:
 Execute o comando a seguir:
 
 
- **CLI** 
+ **Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -186,7 +144,7 @@ Execute o comando a seguir:
 Execute o comando a seguir:
 
 
- **CLI** 
+ **Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -203,7 +161,7 @@ Execute o comando a seguir:
 Execute o comando a seguir:
 
 
- **CLI** 
+ **Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $location = "westus"
@@ -219,7 +177,7 @@ Execute o comando a seguir:
 
 ## Criando regras para os NSG's
 
-**CLI** 
+**Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $location = "westus"
@@ -256,7 +214,7 @@ Execute o comando a seguir:
 Execute o comando a seguir:
 
 
- **CLI** 
+ **Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $location = "westus"
@@ -293,7 +251,7 @@ Execute o comando a seguir:
 
 ## Criar bastion host
 
- **CLI** 
+**Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
    $location = "westus"
@@ -309,7 +267,7 @@ Execute o comando a seguir:
 
 ## Criar máquinas virtuais da camada web
 
-   **CLI** 
+   **Cloud Shell**  
    ```
    for ($i = 1; $i -lt 4 ; $i++)
    {
@@ -348,7 +306,7 @@ Execute o comando a seguir:
 
    Primeiramente vamos obter o ip's das máquinas da camada web para associa-lo ao application gateway
 
-   **CLI** 
+   **Cloud Shell**  
    ``` 
       $resourceGroup = "rg-ntier"
       $vm1WebName = "vmWebNTier1"
@@ -362,7 +320,7 @@ Execute o comando a seguir:
 
    Agora vamos implatar o Application Gateway
 
-   **CLI** 
+   **Cloud Shell**  
    ```
    $resourceGroup = "rg-ntier"
    $location = "westus"
@@ -394,7 +352,7 @@ Execute o comando a seguir:
 
    Crie um balanceador de carga interno com **az network lb create.**
 
-   **CLI** 
+   **Cloud Shell**  
  ``` 
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -422,7 +380,7 @@ Execute o comando a seguir:
 
    Crie uma investigação de integridade com **az network lb probe create.**
 
-**CLI** 
+**Cloud Shell**  
    ``` 
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -447,7 +405,7 @@ Execute o comando a seguir:
 
    Crie uma regra de balanceador de carga com az network lb rule create.
 
-   **CLI** 
+   **Cloud Shell**  
  ``` 
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -480,7 +438,7 @@ Execute o comando a seguir:
 
 **Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
 
-   **CLI** 
+   **Cloud Shell**  
    ```
 
    for ($i = 1; $i -lt 4 ; $i++)
@@ -522,7 +480,7 @@ Execute o comando a seguir:
 
    **Obs:** O **--ip-config-name** é a junção do radical **ipconfig** com o nome de cada vm.
 
-   **CLI** 
+   **Cloud Shell**  
 
    ``` 
    for ($i = 1; $i -lt 4 ; $i++)
@@ -547,7 +505,7 @@ Execute o comando a seguir:
 
 Obtendo o ip do Load Balancer da camada Business
 
-**CLI** 
+**Cloud Shell**  
   ```
   $resourceGroup = "rg-ntier"
   $lbName = "lbBusiness"
@@ -557,7 +515,7 @@ Obtendo o ip do Load Balancer da camada Business
 
 Criando regra de saída
 
-**CLI** 
+**Cloud Shell**  
   ```
 $resourceGroup = "rg-ntier"
 $location = "westus"
@@ -586,7 +544,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
 
    Crie um balanceador de carga interno com **az network lb create.**
 
-   **CLI** 
+   **Cloud Shell**  
  ``` 
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -614,7 +572,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
 
    Crie uma investigação de integridade com **az network lb probe create.**
 
-**CLI** 
+**Cloud Shell**  
    ``` 
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -639,7 +597,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
 
    Crie uma regra de balanceador de carga com az network lb rule create.
 
-   **CLI** 
+   **Cloud Shell**  
  ``` 
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
@@ -673,7 +631,7 @@ EM REVISÃO
 
 **Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
 
-**CLI** 
+**Cloud Shell**  
    ```powershell
 
       ## Global
@@ -731,7 +689,7 @@ EM REVISÃO
 
    **Obs:** O **--ip-config-name** é a junção do radical **ipconfig** com o nome de cada vm.
 
-   **CLI** 
+   **Cloud Shell**  
 
    ``` 
    for ($i = 1; $i -lt 4 ; $i++)
@@ -756,7 +714,7 @@ EM REVISÃO
 
 Obtendo o ip do Load Balancer da camada de Banco de Dados
 
-**CLI** 
+**Cloud Shell**  
   ```
   $resourceGroup = "rg-ntier"
   $lbName = "lbData"
@@ -766,7 +724,7 @@ Obtendo o ip do Load Balancer da camada de Banco de Dados
 
 Criando regra de saída
 
-**CLI** 
+**Cloud Shell** 
   ```
 $resourceGroup = "rg-ntier"
 $location = "westus"
@@ -784,7 +742,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
 
 Para deletar o grupo de recurso, execute o comando abaixo.
 
-  **powershell** 
+  **Cloud Shell** 
   ```
    $name = "rg-ntier"
   
