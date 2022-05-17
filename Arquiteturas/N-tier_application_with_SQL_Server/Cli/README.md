@@ -1,4 +1,4 @@
-# Lab 1 - N-tier_application_with_SQL_Server Cli do Azure
+# Lab 1 - N-tier_application_with_SQL_Server
 
 ![image](../../images/arquiteturaNTier.png)
 
