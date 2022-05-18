@@ -348,6 +348,77 @@ az network bastion create --name $bastionName --public-ip-address $publicIpBasti
 
    ```
 ## Criar DNS Público
+### Criar Dominio
+Agora vamos criar uma zona DNS pública. Para isso se precisa de um dominio registrado. Caso não tenha um domínio acesse o tutorial [Registrando um domínio freenom](https://ajuda.zievo.com.br/registrando-um-dominio-freenom/).
+Nele você irá criar o seu dominio que será usado nesse laboratorio. 
+
+**Obs:** Você sempre poderá usar esse domínio em seu laboratorio deste que o desassocie dos laboratórios anteriores.
+
+### Criar uma zona DNS
+
+Uma zona DNS é criada usando o comando **az network dns zone create** . Para ver a ajuda desse comando, digite **az network dns zone create -h**.
+
+O exemplo a seguir cria uma zona DNS chamada no grupo de recursos **rg-ntier**. Use o exemplo para criar uma zona DNS, substituindo os valores pelos seus próprios.
+ **Cloud Shell**  
+ ``` 
+$resourceGroup = "rg-ntier"
+$dnsName = "comunidadecloudexpert.ga"
+
+
+az network dns zone create -g $resourceGroup -n $dnsName
+  
+ ```
+### Criar uma zona DNS
+
+Para criar um registro DNS, use o comando **az network dns record-set [record type] add-record**. Para obter ajuda sobre registros A, veja **azure network dns record-set A add-record -h**.
+
+O exemplo a seguir cria um registro com o nome relativo "www" na Zona DNS "comunidadecloudexpert.ga", no grupo de recursos **"rg-ntier"**. O nome totalmente qualificado do conjunto de registros é **"www.comunidadecloudexpert.ga"**. O tipo de registro é "A", com o endereço IP do application gateway e um TTL padrão de 3.600 segundos (1 hora).
+
+**Cloud Shell**  
+ ``` 
+$resourceGroup = "rg-ntier"
+$zoneName = "comunidadecloudexpert.ga"
+$ipaddress  = 10.10.10.10
+
+
+az network dns record-set a add-record -g $resourceGroup -z $zoneName -n www -a $ipaddress
+  
+ ```
+### Testar a resolução de nome
+
+Agora que você tem uma zona DNS de teste com um registro 'A' de teste, é possível testar a resolução de nome com uma ferramenta chamada **nslookup**.
+
+Para testar a resolução de nomes DNS:
+
++ Execute o seguinte cmdlet para obter a lista de servidores de nomes da sua zona:
+
+**Cloud Shell**  
+ ``` 
+$resourceGroup = "rg-ntier"
+$zoneName = comunidadecloudexpert.ga
+
+az network dns record-set ns show --resource-group $resourceGroup --zone-name $zoneName --name @  
+ ```
++ Copie um dos nomes de servidor de nomes da saída da etapa anterior.
+
++ Abra um prompt de comando e execute o seguinte:
+
+**Cloud Shell**  
+ ```
+nslookup www.comunidadecloudexpert.ga <name server name>  
+ ```
+
+Por exemplo:
+
+**Cloud Shell**  
+ ```
+nslookup www.comunidadecloudexpert.ga ns1-08.azure-dns.com.  
+ ```
+
+Você deve ver algo semelhante à tela a seguir:
+
+
+O nome do host www.comunidadecloudexpert.ga resolve para 10.10.10.10, conforme você o configurou. Esse resultado verifica se a resolução do nome está funcionando corretamente.
 
 ## Criar DDos
 
@@ -678,12 +749,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
 
 
 
-EM REVISÃO
-
-## Criar Máquinas Virtuais da camada de Banco de Dados com uma conta de armazenamento
-
-**Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
-
+## Criar uma conta de armazenamento
 **Cloud Shell**  
    ```powershell
 
@@ -695,43 +761,39 @@ EM REVISÃO
       $StorageName = "rgntierstoragelab"
       $StorageSku = "Premium_LRS"
       $StorageAccount = New-AzStorageAccount -ResourceGroupName $resourceGroup -Name $StorageName -SkuName $StorageSku -Kind "Storage" -Location $Location
+   ```
+
+## Criar Máquinas Virtuais da camada de Banco de Dados
+**Obs:** O nome da sua maquina virtual não pode ter mais de 15 caracteres.
+
+**Cloud Shell**  
+   ```powershell
+  for ($i = 1; $i -lt 3 ; $i++)
+{
+      $resourceGroup = "rg-ntier"
+      $vNetName = "vnet-ntier"
+      $subnetDataName = "subnet-data"
+      $nsg = "nsgData"
+      $vmDataName = "vmDataNTier$i"
+      $image = "Win2019datacenter"
+      $login = "azureUser"
+      $senha = "P4ss0w0rd555*"
+      
+
+      az vm create `
+      --name $vmDataName `
+      --resource-group $resourceGroup `
+      --admin-password $senha `
+      --admin-username $login `
+      --image $image `
+      --no-wait `
+      --vnet-name $vNetName `
+      --subnet $subnetDataName `
+      --nsg $nsg `
+      --public-ip-address """"
+} 
+
    
-   for ($i = 1; $i -lt 3 ; $i++)
-   {
-        
-   ## Network
-   
-   $InterfaceName = "vmDataNTier"+ $i + "ServerNIC"
-   $Nsg = Get-AzNetworkSecurityGroup -Name "nsgData" -ResourceGroupName $resourceGroup
-   $vnet = Get-AzVirtualNetwork -Name "vnet-ntier" -ResourceGroupName $resourceGroup
-   $Subnet = Get-AzVirtualNetworkSubnetConfig -Name "subnet-data" -VirtualNetwork $vnet  
-   $Interface = New-AzNetworkInterface -Name $InterfaceName -ResourceGroupName $resourceGroup -Location $Location -SubnetId $Subnet.Id  -NetworkSecurityGroupId $Nsg.Id
-
-
-   ##Image
-   $PublisherName = "MicrosoftSQLServer"
-   $OfferName = "SQL2017-WS2016"
-   $Sku = "SQLDEV"
-   $Version = "latest"
-
-   ##Compute
-   $vmDataName = "vmDataNTier$i"
-   $ComputerName = $resourceGroup + "Server"
-   $VMSize = "Standard_DS13_v2"
-   $OSDiskName = $vmDataName + "OSDisk"
-   $VirtualMachine = New-AzVMConfig -VMName $vmDataName -VMSize $VMSize
-   $Credential = Get-Credential -Message "Type the name and password of the local administrator account."
-   $VirtualMachine = Set-AzVMOperatingSystem -VM $VirtualMachine -Windows -ComputerName $ComputerName -Credential $Credential -ProvisionVMAgent -EnableAutoUpdate #-TimeZone = $TimeZone
-   $VirtualMachine = Add-AzVMNetworkInterface -VM $VirtualMachine -Id $Interface.Id
-   $OSDiskUri = $StorageAccount.PrimaryEndpoints.Blob.ToString() + "vhds/" + $OSDiskName + ".vhd"
-   $VirtualMachine = Set-AzVMOSDisk -VM $VirtualMachine -Name $OSDiskName -VhdUri $OSDiskUri -Caching ReadOnly -CreateOption FromImage
-
-   # Create the VM in Azure
-   New-AzVM -ResourceGroupName $resourceGroup -Location $Location -VM $VirtualMachine
-
-   # Add the SQL IaaS Extension, and choose the license type
-   New-AzSqlVM -ResourceGroupName $resourceGroup -Name $VirtualMachine -Location $Location -LicenseType PAYG
-   }
    ```
 
 ### Adicionar máquinas virtuais ao pool de back-end
@@ -791,6 +853,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
 
    
 
+
 ## Deletar recursos
 
 Para deletar o grupo de recurso, execute o comando abaixo.
@@ -807,4 +870,4 @@ Quando se deleta o grupo de recursos, todos os recursos contidos nele são delet
 #### Referências
 
 
-
++ https://docs.microsoft.com/pt-br/azure/dns/dns-getstarted-cli
