@@ -414,7 +414,7 @@ Agora que você tem uma zona DNS de teste com um registro 'A', é necessária al
 Você deve ver algo semelhante à tela a seguir:
 
 
-O nome do seu host (www.comunidadecloudexpert.ga) resolve para o ip publico do application gateway, conforme você o configurou. Esse resultado verifica se a resolução do nome está funcionando corretamente.
+O nome do host, que nesse exemplo é "www.comunidadecloudexpert.ga" resolve para o ip publico do application gateway, conforme configurado. Esse resultado verifica que a resolução do nome está funcionando corretamente.
 
 ![image](../../images/sitefunc.png)
 
