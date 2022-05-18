@@ -407,6 +407,7 @@ Agora que você tem uma zona DNS de teste com um registro 'A', é necessária al
   ![image](../../images/managedomains.png)
 
 + Na aba **Management Tools", selecione **NameServers**
+
 Altere os nameservers com os valores gerados na criação da zona. Caso tenha fechado o cloud shell, se pode encontrar o nameservers dentro do serviço DNS no portal.
 
   ![image](../../images/nameservers0.png)
@@ -416,7 +417,7 @@ Altere os nameservers com os valores gerados na criação da zona. Caso tenha fe
 
   
 
-
+Abra uma aba no navegagor e acesse a URL do seu dominio.
 
 Você deve ver algo semelhante à tela a seguir:
 
@@ -426,7 +427,38 @@ O nome do host, que nesse exemplo é "www.comunidadecloudexpert.ga" resolve para
 ![image](../../images/sitefunc.png)
 
 ## Criar DDos
+Agora vamos criar um plano DDoS.
 
+Execute o comando a seguir:
+
+
+  **Cloud Shell**  
+ ``` 
+$resourceGroup = "rg-ntier"
+$vNetName = "vnet-ntier"
+$location = "westus"
+$ddosName = "ddosNtier"
+
+
+az network ddos-protection create --location $location --name $ddosName --resource-group $resourceGroup --vnets $vNetName
+  
+ ```
+
+Após a criação do DDos, iremos habilitalo. Dentro do portal, entre na vnet, na aba setings e selecione DDOS protection.
+
+Verifique se já esta habiltado. Se não estiver Habite.
+
+![image](../../images/ddos0.png)
+
+Caso aconteça como no exemplo de não aparecer como opção, vá ate o recursso DDOS para obter o ID do recurso.
+
+![image](../../images/ddos1.png)
+
+Selecione a caixa **I know my Resource ID**, cole o ID e click em save.
+
+![image](../../images/ddos3.png)
+
+Pronto seu DDoS foi criado e atribuido.
 
 ## Criar Azure Load Balancer da camada Business
 
