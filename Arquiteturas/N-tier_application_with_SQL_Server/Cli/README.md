@@ -397,13 +397,20 @@ az network dns record-set a add-record -g $resourceGroup -z $zoneName -n www -a 
 ### Testar a resolução de nome
 Agora que você tem uma zona DNS de teste com um registro 'A', é necessária alterar os nameservers dentro da provedora de dominio.
 + Volte ao site da provedora do dominio
-+ Caso não esteja logado, fça o login
-+ Na aba **services**, selecione "My Domains".
++ Caso não esteja logado, faça o login
++ Na aba **Services**, selecione "My Domains".
+
   ![image](../../images/mydomains.png)
+
++ Selecione "Manage Domain".
 
   ![image](../../images/managedomains.png)
 
++ Na aba **Management Tools", selecione **NameServers**
+Altere os nameservers com os valores gerados na criação da zona. Caso tenha fechado o cloud shell, se pode encontrar o nameservers dentro do serviço DNS no portal.
+
   ![image](../../images/nameservers0.png)
+
 
   ![image](../../images/nameservers.png)
 
