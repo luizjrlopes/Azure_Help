@@ -299,14 +299,18 @@ az network bastion create --name $bastionName --public-ip-address $publicIpBasti
 }  
 ```
 
-   Após a criação das vms, inserir comando abaixo em cada vm pelo Run comand no portal e desligar e ligar vm's novamente.
+   Após a criação das vms, inserir comando abaixo em cada vm pelo **Run Command Script** no portal. 
 
-**Run Command**  
+**Run Command Script**  
    ```
    powershell.exe Install-WindowsFeature -name Web-Server -IncludeManagementTools
    powershell.exe Remove-Item -Path 'C:\inetpub\wwwroot\iisstart.htm'
    powershell.exe Add-Content -Path 'C:\inetpub\wwwroot\iisstart.htm' -Value $($env:computername)
    ```
+![image](../../images/runcomandwebvm.png)
+
+
+Após a conclusão do passo acima, desaloque a aloque novamente cada vm.
 
 ## Criar Application Gateway
 
@@ -347,6 +351,8 @@ az network bastion create --name $bastionName --public-ip-address $publicIpBasti
    --public-ip-address $publicIpApgName --servers $ipVMWeb1 $ipVMWeb2 $ipVMWeb3 
 
    ```
+
+   ![image](../../images/sitefunc0.png)
 ## Criar DNS Público
 ### Criar Dominio
 Agora vamos criar uma zona DNS pública. Para isso se precisa de um dominio registrado. Caso não tenha um domínio acesse o tutorial [Registrando um domínio freenom](https://ajuda.zievo.com.br/registrando-um-dominio-freenom/).
@@ -374,51 +380,43 @@ Para criar um registro DNS, use o comando **az network dns record-set [record ty
 
 O exemplo a seguir cria um registro com o nome relativo "www" na Zona DNS "comunidadecloudexpert.ga", no grupo de recursos **"rg-ntier"**. O nome totalmente qualificado do conjunto de registros é **"www.comunidadecloudexpert.ga"**. O tipo de registro é "A", com o endereço IP do application gateway e um TTL padrão de 3.600 segundos (1 hora).
 
+**Obs:** Use o endereço de ip público do seu application gateway.
+
+
+
 **Cloud Shell**  
  ``` 
 $resourceGroup = "rg-ntier"
 $zoneName = "comunidadecloudexpert.ga"
-$ipaddress  = 10.10.10.10
+$ipaddress  = "<ip publico do aplication Gateway>"
 
 
 az network dns record-set a add-record -g $resourceGroup -z $zoneName -n www -a $ipaddress
   
  ```
 ### Testar a resolução de nome
+Agora que você tem uma zona DNS de teste com um registro 'A', é necessária alterar os nameservers dentro da provedora de dominio.
++ Volte ao site da provedora do dominio
++ Caso não esteja logado, fça o login
++ Na aba **services**, selecione "My Domains".
+  ![image](../../images/mydomains.png)
 
-Agora que você tem uma zona DNS de teste com um registro 'A' de teste, é possível testar a resolução de nome com uma ferramenta chamada **nslookup**.
+  ![image](../../images/managedomains.png)
 
-Para testar a resolução de nomes DNS:
+  ![image](../../images/nameservers0.png)
 
-+ Execute o seguinte cmdlet para obter a lista de servidores de nomes da sua zona:
+  ![image](../../images/nameservers.png)
 
-**Cloud Shell**  
- ``` 
-$resourceGroup = "rg-ntier"
-$zoneName = comunidadecloudexpert.ga
+  
 
-az network dns record-set ns show --resource-group $resourceGroup --zone-name $zoneName --name @  
- ```
-+ Copie um dos nomes de servidor de nomes da saída da etapa anterior.
 
-+ Abra um prompt de comando e execute o seguinte:
-
-**Cloud Shell**  
- ```
-nslookup www.comunidadecloudexpert.ga <name server name>  
- ```
-
-Por exemplo:
-
-**Cloud Shell**  
- ```
-nslookup www.comunidadecloudexpert.ga ns1-08.azure-dns.com.  
- ```
 
 Você deve ver algo semelhante à tela a seguir:
 
 
-O nome do host www.comunidadecloudexpert.ga resolve para 10.10.10.10, conforme você o configurou. Esse resultado verifica se a resolução do nome está funcionando corretamente.
+O nome do seu host (www.comunidadecloudexpert.ga) resolve para o ip publico do application gateway, conforme você o configurou. Esse resultado verifica se a resolução do nome está funcionando corretamente.
+
+![image](../../images/sitefunc.png)
 
 ## Criar DDos
 
