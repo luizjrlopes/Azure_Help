@@ -880,7 +880,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
     --private-ip-address $privateIpAddress `
     --no-wait `
     --public-ip-address """"
-    --zone $i
+    
    }  
    ```
 
@@ -908,3 +908,7 @@ Quando se deleta o grupo de recursos, todos os recursos contidos nele são delet
 
 
 + https://docs.microsoft.com/pt-br/azure/dns/dns-getstarted-cli
++ https://docs.microsoft.com/pt-br/azure/azure-sql/virtual-machines/windows/ways-to-connect-to-sql?view=azuresql
++ https://docs.microsoft.com/pt-br/azure/azure-sql/virtual-machines/windows/sql-server-on-azure-vm-iaas-what-is-overview?view=azuresql&viewFallbackFrom=sql-server-ver15
++ https://docs.microsoft.com/pt-br/sql/relational-databases/tutorial-use-azure-blob-storage-service-with-sql-server-2016?view=sql-server-ver15
++ https://docs.microsoft.com/pt-br/windows-server/identity/ad-ds/deploy/virtual-dc/adds-on-azure-vm
