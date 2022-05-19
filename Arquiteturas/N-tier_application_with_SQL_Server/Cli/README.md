@@ -795,7 +795,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
    **Cloud Shell**  
 
    ``` 
-   for ($i = 1; $i -lt 4 ; $i++)
+   for ($i = 1; $i -lt 3 ; $i++)
    {
       $resourceGroup = "rg-ntier"
       $lbName = "lbData"
