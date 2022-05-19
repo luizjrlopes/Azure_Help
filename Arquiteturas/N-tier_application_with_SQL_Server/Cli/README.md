@@ -862,7 +862,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
    $adminPassword= "P4ss0w0rd555*"
   
 
-   for ($i = 1; $i -lt 4 ; $i++)
+   for ($i = 1; $i -lt 3 ; $i++)
    {
       $name = "domainController$i"
       $privateIpAddress = "10.5.4.1$i"
