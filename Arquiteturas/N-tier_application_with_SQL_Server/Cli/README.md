@@ -43,7 +43,7 @@ Execute o comando a seguir:
  **Cloud Shell** 
   ```
    $name = "rg-ntier"
-   $location = "westus"
+   $location = "eastus"
 
    az group create --name $name --location $location
 
@@ -58,7 +58,7 @@ Execute o comando a seguir:
  **Cloud Shell**  
   ```
    $resourceGroup = "rg-ntier"
-   $location = "westus"
+   $location = "eastus"
    $vNetName = "vnet-ntier"
    $addressPrefixVNet="10.5.0.0/16"
    $subnetNameApg = "subnet-apg"
@@ -166,7 +166,7 @@ Execute o comando a seguir:
  **Cloud Shell**  
   ```
 $resourceGroup = "rg-ntier"
-$location = "westus"
+$location = "eastus"
 
 echo "Creating nsg's"
 az network nsg create --resource-group $resourceGroup --name "nsgApg" --location "$location"
@@ -182,7 +182,7 @@ az network nsg create --resource-group $resourceGroup --name "nsgADDS" --locatio
 **Cloud Shell**  
   ```
 $resourceGroup = "rg-ntier"
-$location = "westus"
+$location = "eastus"
 
 echo "Criando regras para nsgApg"
 az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgApg" --name Allow-HTTP --access Allow --protocol Tcp --direction Inbound --priority 100 --source-address-prefix Internet --source-port-range "*" --destination-address-prefix "*" --destination-port-range 80
@@ -221,7 +221,7 @@ Execute o comando a seguir:
  **Cloud Shell**  
   ```
 $resourceGroup = "rg-ntier"
-$location = "westus"
+$location = "eastus"
 $vNetName = "vnet-ntier"
 $subnetNameApg = "subnet-apg"
 $subnetWebName = "subnet-web"
@@ -258,7 +258,7 @@ az network vnet subnet update --vnet-name $vNetName --name $subnetADDSName --res
 **Cloud Shell**  
   ```
 $resourceGroup = "rg-ntier"
-$location = "westus"
+$location = "eastus"
 $vNetName = "vnet-ntier"
 $publicIpBastionName = "publicIpBastion"
 $bastionName = "bastionNTier"
@@ -296,6 +296,7 @@ az network bastion create --name $bastionName --public-ip-address $publicIpBasti
    --subnet $subnetWebName `
    --nsg $nsg `
    --public-ip-address """"
+   --zone $i
 }  
 ```
 
@@ -333,7 +334,7 @@ Após a conclusão do passo acima, desaloque a aloque novamente cada vm.
    **Cloud Shell**  
    ```
    $resourceGroup = "rg-ntier"
-   $location = "westus"
+   $location = "eastus"
    $vNetName = "vnet-ntier"
    $subnetNameApg = "subnet-apg"
    $publicIpApgName = "publicIpApg"
@@ -436,7 +437,7 @@ Execute o comando a seguir:
  ``` 
 $resourceGroup = "rg-ntier"
 $vNetName = "vnet-ntier"
-$location = "westus"
+$location = "eastus"
 $ddosName = "ddosNtier"
 
 
@@ -578,6 +579,7 @@ for ($i = 1; $i -lt 4 ; $i++)
       --subnet $subnetBusinessName `
       --nsg $nsg `
       --public-ip-address """"
+      --zone $i
 }
 
  ```
@@ -632,7 +634,7 @@ Criando regra de saída
 **Cloud Shell**  
   ```
 $resourceGroup = "rg-ntier"
-$location = "westus"
+$location = "eastus"
 $ipFrontLbBusiness = "10.5.2.7"
    
    
@@ -642,59 +644,6 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
 
    
    ```
-
-
-
-
-## Criar máquinas virtuais da camada ADDS
-
-
-   **Cloud Shell**  
-   ```
-   $location= "westus"
-   $resourceGroup = "rg-ntier"
-   $nsgADDS = "nsgADDS"
-   $vNetName = "vnet-ntier"
-   $vNetAddress= "10.5.0.0/16"
-   $subnetADDSName = "subnet-adds"
-   $subnetPrefixADDS = "10.5.4.0/24"
-   $availabilitySet= "DomainControllers"
-   $vmSize= "Standard_DS1_v2"
-   $dataDiskSize= 20
-   $image = "Win2019datacenter"
-   $adminUsername= "azureuser"
-   $adminPassword= "P4ss0w0rd555*"
-  
-
-   # Create an availability set.
-   az vm availability-set create `
-   --name $availabilitySet `
-   --resource-group $resourceGroup `
-   --location $location
-
-   for ($i = 1; $i -lt 4 ; $i++)
-   {
-      $name = "domainController$i"
-      $privateIpAddress = "10.5.4.1$i"
-      
-    az vm create `
-    --resource-group $resourceGroup `
-    --availability-set $availabilitySet `
-    --name $$name `
-    --size $vmSize `
-    --image Win2019Datacenter `
-    --admin-username $adminUsername `
-    --admin-password $adminPassword `
-    --data-disk-sizes-gb $dataDiskSize `
-    --data-disk-caching None `
-    --nsg $nsgADDS `
-    --private-ip-address $privateIpAddress `
-    --no-wait `
-    --public-ip-address """"
-   }  
-   ```
-
-
 
 
 
@@ -791,7 +740,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
    ```powershell
 
       ## Global
-      $Location = "westus"
+      $Location = "eastus"
       $resourceGroup = "rg-ntier"
 
       # Storage
@@ -812,9 +761,10 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
       $subnetDataName = "subnet-data"
       $nsg = "nsgData"
       $vmDataName = "vmDataNTier$i"
-      $image = "Win2019datacenter"
-      $login = "azureUser"
+      $image = "MicrosoftSQLServer:sql2016sp2-ws2019:sqldev:13.2.211109"
+      $login = "azureuser"
       $senha = "P4ss0w0rd555*"
+     
       
 
       az vm create `
@@ -827,8 +777,11 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
       --vnet-name $vNetName `
       --subnet $subnetDataName `
       --nsg $nsg `
-      --public-ip-address """"
+      --public-ip-address """" 
+      
+      
 } 
+
 
    
    ```
@@ -858,9 +811,10 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
       --resource-group $resourceGroup `
       --lb-name $lbName
    }
+  
          
    ```
-### Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
+### Criar uma regra de saída no NSG da camada bussiness direcionado o tráfego para o loadbalancer da camada de Banco de Dados.
 
 Obtendo o ip do Load Balancer da camada de Banco de Dados
 
@@ -877,7 +831,7 @@ Criando regra de saída
 **Cloud Shell** 
   ```
 $resourceGroup = "rg-ntier"
-$location = "westus"
+$location = "eastus"
 $ipFrontLbData = "10.5.3.6"
    
    
@@ -889,6 +843,52 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
    ```
 
    
+## Criar máquinas virtuais da camada ADDS
+
+
+   **Cloud Shell**  
+   ```
+   $location= "eastus"
+   $resourceGroup = "rg-ntier"
+   $nsgADDS = "nsgADDS"
+   $vNetName = "vnet-ntier"
+   $vNetAddress= "10.5.0.0/16"
+   $subnetADDSName = "subnet-adds"
+   $subnetPrefixADDS = "10.5.4.0/24"
+   $vmSize= "Standard_DS1_v2"
+   $dataDiskSize= 20
+   $image = "Win2019datacenter"
+   $adminUsername= "azureuser"
+   $adminPassword= "P4ss0w0rd555*"
+  
+
+   for ($i = 1; $i -lt 4 ; $i++)
+   {
+      $name = "domainController$i"
+      $privateIpAddress = "10.5.4.1$i"
+      
+    az vm create `
+    --resource-group $resourceGroup `
+    --name $$name `
+    --size $vmSize `
+    --image Win2019Datacenter `
+    --admin-username $adminUsername `
+    --admin-password $adminPassword `
+    --data-disk-sizes-gb $dataDiskSize `
+    --data-disk-caching None `
+    --nsg $nsgADDS `
+    --private-ip-address $privateIpAddress `
+    --no-wait `
+    --public-ip-address """"
+    --zone $i
+   }  
+   ```
+
+
+
+
+
+
 
 
 ## Deletar recursos
