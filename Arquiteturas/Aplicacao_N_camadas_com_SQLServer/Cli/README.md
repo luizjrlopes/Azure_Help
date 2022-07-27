@@ -1,5 +1,6 @@
-# Lab 1 - N-tier_application_with_SQL_Server
+# Lab 1 - Aplicação_N_camadas_com_SQLServer
 
+## Diagrama de Arquitetura
 ![image](../../images/arquiteturaNTier.png)
 
 
@@ -296,7 +297,6 @@ az network bastion create --name $bastionName --public-ip-address $publicIpBasti
    --subnet $subnetWebName `
    --nsg $nsg `
    --public-ip-address """"
-   --zone $i
 }  
 ```
 
@@ -579,7 +579,6 @@ for ($i = 1; $i -lt 4 ; $i++)
       --subnet $subnetBusinessName `
       --nsg $nsg `
       --public-ip-address """"
-      --zone $i
 }
 
  ```
@@ -604,8 +603,8 @@ for ($i = 1; $i -lt 4 ; $i++)
       $resourceGroup = "rg-ntier"
       $lbName = "lbBusiness"
       $backendPoolName = "backEndPoolBusiness"
-      $nicName = "vmBusNTier"+$i+"VMNic"
-      $ipConfigName = "ipconfigvmBusNTier$i"
+      $nicName = "vmBusiNTier"+$i+"VMNic"
+      $ipConfigName = "ipconfigvmBusiNTier$i"
    
 
       az network nic ip-config address-pool add `
@@ -712,23 +711,23 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
    $subnetDataName = "subnet-data"
-   $lbName = "lbBusiness"
+   $lbName = "lbData"
    $frontendIpName = "frontEndData"
    $backendPoolName = "backEndPoolData"
-   $probeLbBusinessName = "healthProbeData"
-   $ruleLbBusinessName= "httpRuleData"
+   $probeLbDataName = "healthProbeData"
+   $ruleLbDataName= "httpRuleData"
 
    
    az network lb rule create `
    --resource-group $resourceGroup `
    --lb-name $lbName `
-   --name $ruleLbBusinessName `
+   --name $ruleLbDataName `
    --protocol tcp `
    --frontend-port 80 `
    --backend-port 80 `
    --frontend-ip-name $frontendIpName `
    --backend-pool-name $backendPoolName `
-   --probe-name $probeLbBusinessName `
+   --probe-name $probeLbDataName `
    --idle-timeout 15 `
    --enable-tcp-reset true
    ```
@@ -777,9 +776,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
       --vnet-name $vNetName `
       --subnet $subnetDataName `
       --nsg $nsg `
-      --public-ip-address """" 
-      
-      
+      --public-ip-address """"
 } 
 
 
@@ -859,7 +856,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
    $dataDiskSize= 20
    $image = "Win2019datacenter"
    $adminUsername= "azureuser"
-   $adminPassword= "P4ss0w0rd555*"
+   $adminPassword= "P4ssw0rd333*"
   
 
    for ($i = 1; $i -lt 3 ; $i++)
@@ -869,7 +866,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
       
     az vm create `
     --resource-group $resourceGroup `
-    --name $$name `
+    --name $name `
     --size $vmSize `
     --image Win2019Datacenter `
     --admin-username $adminUsername `
